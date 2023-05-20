@@ -10,4 +10,4 @@ parse.o: parse.c header.h
 	gcc -g -c parse.c
 
 clean: 
-	rm parse parse.o
+	rm main parse.o

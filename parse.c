@@ -1,11 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "header.h"
+//#include <stdio.h>
+//#include <stdlib.h>
 
 int hex2bin(char myString[10]);
 
 int main() {
 	char myString[10];
 	FILE *fptr;
+
+	int arr1[3];
+	int arr2[3];
+	int arr3[3];
+	int arr4[3];
 	
 	fptr = fopen("imageSHORT.txt", "r");
 /*	
@@ -24,7 +30,7 @@ int main() {
 	fclose(fptr);
 
 	exit(EXIT_SUCCESS);
-}
+}//end of main function.
 
 int eval_opcode(char myString){
 	//if(myString[0]==0&&
@@ -37,8 +43,8 @@ int hex2bin(char myString[10]){
 	//correct this because there's no leading 0X.
 	size_t i = (myString[1] == 'x' || myString[1] == 'X')? 2: 0;
 	
-	//while(myString[i]) {
-	for(int i=0;i<9;++i){
+	while(myString[i]) {
+	//for(int i=0;i<9;++i){
 		switch (myString[i]) {
 		case '0':
 		printf("0000 ");
@@ -120,8 +126,8 @@ int hex2bin(char myString[10]){
 		default:
 		printf("\n");
 		//printf("\nInvalid hexadecimal digit %c", myString[i]);
-		}
+		}//end of switch statement.
 		++i;
-	}
-	//printf("Hello world\n");
-}
+	}//end of for loop.
+
+}//end of hex2bin function.

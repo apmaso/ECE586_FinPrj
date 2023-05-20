@@ -5,6 +5,7 @@
 
 int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int opcode[], int len);
+int bin2dec_2sComp(int opcode[], int len);
 
 
 int main() {
@@ -29,6 +30,11 @@ int main() {
     int Rt[] = {0, 0, 0, 1, 1};
     int decRt = 0;
     int RtLen = 5;
+
+    int imm[] = {1, 1, 1, 1, 0};
+    int decImm = 0;
+    int immLen = 5;
+
     
     fptr = fopen("imageSHORT.txt", "r");
 /*	
@@ -52,11 +58,13 @@ int main() {
     decOp = bin2dec(opcode, decLen);
     decRs = bin2dec(Rs, RsLen);
     decRt = bin2dec(Rt, RtLen);
+    decImm = bin2dec_2sComp(imm, immLen);
 
 
     printf("The decimal value for opcode = %d \n", decOp);
     printf("The decimal value for Rs = %d \n", decRs);
     printf("The decimal value for Rt = %d \n", decRt);
+    printf("The decimal value for Imm = %d \n", decImm);
 
 
 	exit(EXIT_SUCCESS);
@@ -161,6 +169,24 @@ int hex2bin(char myString[10], int num[SIZ]){
 	}//end of for loop.
 
 }//end of hex2bin function.
+
+int bin2dec_2sComp(int array[], int len) {
+    
+    // Decimal value to be returned
+    int dec = 0;
+
+    for (int i=0; i< len; i++) {
+       if (array[i] == 1) {
+            dec = (dec + pow(2, (len-1-i)));
+       }
+    }
+
+    if (array[0] == 1) {
+        dec = (dec - pow(2, (len)));
+    }
+    //return decimal value;  
+    return dec; 
+}//end of bin2dec_2sComp
 
 int bin2dec(int array[], int len) {
     

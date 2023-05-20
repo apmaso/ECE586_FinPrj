@@ -7,13 +7,18 @@ int main() {
 	char myString[10];
 	FILE *fptr;
 	
-	fptr = fopen("ece586_memory_image.txt", "r");
-	
+	fptr = fopen("image.txt", "r");
+/*	
 	for(int i=0;i<5;++i){	
 	fgets(myString, 10, fptr);
 	//myString <<	
 	printf("%s", myString);
 	hex2bin(myString);
+	}
+*/
+	while(fgets(myString, 10, fptr)){
+		//printf("%s", myString);
+		hex2bin(myString);
 	}
 
 	fclose(fptr);
@@ -32,7 +37,8 @@ int hex2bin(char myString[10]){
 	//correct this because there's no leading 0X.
 	size_t i = (myString[1] == 'x' || myString[1] == 'X')? 2: 0;
 	
-	while(myString[i]) {
+	//while(myString[i]) {
+	for(int i=0;i<9;++i){
 		switch (myString[i]) {
 		case '0':
 		printf("0000 ");
@@ -106,15 +112,16 @@ int hex2bin(char myString[10]){
 
 		case '/':
 		++i;
-		++i;
+		printf("\n");
+		//++i;
 		break;
 
-		
 
 		default:
-		printf("\nInvalid hexadecimal digit %c", myString[i]);
+		printf("\n");
+		//printf("\nInvalid hexadecimal digit %c", myString[i]);
 		}
 		++i;
 	}
-	printf("Hello world\n");
+	//printf("Hello world\n");
 }

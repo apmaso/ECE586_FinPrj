@@ -7,7 +7,7 @@ int main() {
 	char myString[10];
 	FILE *fptr;
 	
-	fptr = fopen("image.txt", "r");
+	fptr = fopen("imageSHORT.txt", "r");
 /*	
 	for(int i=0;i<5;++i){	
 	fgets(myString, 10, fptr);

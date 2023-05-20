@@ -2,7 +2,7 @@
 //#include <stdio.h>
 //#include <stdlib.h>
 
-int hex2bin(char myString[10]);
+int hex2bin(char myString[10], int num[SIZ]);
 
 int main() {
 	char myString[10];
@@ -12,6 +12,7 @@ int main() {
 	int arr2[3];
 	int arr3[3];
 	int arr4[3];
+	int num[SIZ];
 	
 	fptr = fopen("image.txt", "r");
 /*	
@@ -24,7 +25,7 @@ int main() {
 */
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
-		hex2bin(myString);
+		hex2bin(myString, num);
 	}
 
 	fclose(fptr);
@@ -39,7 +40,7 @@ int eval_opcode(char myString){
 			}
 
 
-int hex2bin(char myString[10]){
+int hex2bin(char myString[10], int num[SIZ]){
 	//correct this because there's no leading 0X.
 	size_t i = (myString[1] == 'x' || myString[1] == 'X')? 2: 0;
 	

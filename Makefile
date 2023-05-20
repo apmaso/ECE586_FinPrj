@@ -4,10 +4,10 @@
 
 
 main: parse.o 
-	gcc -g -o main parse.o
+	gcc -g -o main parse.o -lm
 
 parse.o: parse.c header.h
-	gcc -g -c parse.c
+	gcc -g -c parse.c -lm
 
 clean: 
 	rm main parse.o

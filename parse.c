@@ -1,8 +1,11 @@
 #include "header.h"
-//#include <stdio.h>
-//#include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 int hex2bin(char myString[10], int num[SIZ]);
+int bin2dec(int opcode[]);
+
 
 int main() {
 	char myString[10];
@@ -13,7 +16,11 @@ int main() {
 	int arr3[3];
 	int arr4[3];
 	int num[SIZ];
-	
+
+
+    int opcode[] = {1, 0, 1, 0, 1, 0};
+    int decOpcode = 0;
+
 	fptr = fopen("imageSHORT.txt", "r");
 /*	
 	for(int i=0;i<5;++i){	
@@ -28,7 +35,16 @@ int main() {
 		hex2bin(myString, num);
 	}
 
-	fclose(fptr);
+
+
+    fclose(fptr);
+
+
+    decOpcode = bin2dec(opcode);
+
+
+    printf("My decimal value = %d", decOpcode);
+
 
 	exit(EXIT_SUCCESS);
 }//end of main function.
@@ -132,3 +148,18 @@ int hex2bin(char myString[10], int num[SIZ]){
 	}//end of for loop.
 
 }//end of hex2bin function.
+
+int bin2dec(int opcode[]) {
+    
+    // Decimal value of opcode returned
+    int decOp = 0;
+    
+
+    for (int i=0; i<6; i++) {
+       if (opcode[i] == 1) {
+            decOp = (decOp + pow(2, (5-i)));
+       }
+    }
+    //return decOpcode;  
+    return decOp;  
+}//end of bin2dec

@@ -4,7 +4,7 @@
 #include <math.h>
 
 int hex2bin(char myString[10], int num[SIZ]);
-int bin2dec(int opcode[]);
+int bin2dec(int opcode[], int len);
 
 
 int main() {
@@ -19,9 +19,18 @@ int main() {
 
 
     int opcode[] = {1, 0, 1, 0, 1, 0};
-    int decOpcode = 0;
+    int decOp = 0;
+    int decLen = 6;
 
-	fptr = fopen("imageSHORT.txt", "r");
+    int Rs[] = {1, 0, 1, 0, 1};
+    int decRs = 0;
+    int RsLen = 5;
+	
+    int Rt[] = {0, 0, 0, 1, 1};
+    int decRt = 0;
+    int RtLen = 5;
+    
+    fptr = fopen("imageSHORT.txt", "r");
 /*	
 	for(int i=0;i<5;++i){	
 	fgets(myString, 10, fptr);
@@ -40,10 +49,14 @@ int main() {
     fclose(fptr);
 
 
-    decOpcode = bin2dec(opcode);
+    decOp = bin2dec(opcode, decLen);
+    decRs = bin2dec(Rs, RsLen);
+    decRt = bin2dec(Rt, RtLen);
 
 
-    printf("My decimal value = %d", decOpcode);
+    printf("The decimal value for opcode = %d \n", decOp);
+    printf("The decimal value for Rs = %d \n", decRs);
+    printf("The decimal value for Rt = %d \n", decRt);
 
 
 	exit(EXIT_SUCCESS);
@@ -149,17 +162,17 @@ int hex2bin(char myString[10], int num[SIZ]){
 
 }//end of hex2bin function.
 
-int bin2dec(int opcode[]) {
+int bin2dec(int array[], int len) {
     
-    // Decimal value of opcode returned
-    int decOp = 0;
+    // Decimal value to be returned
+    int dec = 0;
     
 
-    for (int i=0; i<6; i++) {
-       if (opcode[i] == 1) {
-            decOp = (decOp + pow(2, (5-i)));
+    for (int i=0; i< len; i++) {
+       if (array[i] == 1) {
+            dec = (dec + pow(2, (len-1-i)));
        }
     }
-    //return decOpcode;  
-    return decOp;  
+    //return decimal value;  
+    return dec;  
 }//end of bin2dec

@@ -7,7 +7,7 @@ main: parse.o
 	gcc -g -o main parse.o -lm
 
 parse.o: parse.c header.h
-	gcc -g -c parse.c -lm
+	gcc -g -c parse.c 
 
 clean: 
 	rm main parse.o

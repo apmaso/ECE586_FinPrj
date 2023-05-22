@@ -8,6 +8,9 @@
 
 int hex2bin(char myString[10], int num[SIZ]);
 int makearr(char letter, int i_val, int num[SIZ]);
+int parse(char myString[10], int num[SIZ]);
+void prt32(int num[SIZ]);
+
 
 
 

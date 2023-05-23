@@ -4,6 +4,8 @@ int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int array[], int len);
 int bin2dec_2sComp(int array[], int len);
 int parse(char myString[10], int num[SIZ]);
+int opSwitch(int decOp, int rType, int iType);
+void prt32(int num[SIZ]);
 
 int main() {
 	char myString[10];
@@ -18,6 +20,9 @@ int main() {
     int decOp = 0;
     int opLen = 6;
 
+    int rType = 0;
+    int iType = 0;
+
 	fptr = fopen("imageSHORT.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
@@ -30,11 +35,14 @@ int main() {
         }
 
         decOp = bin2dec(opcode, opLen);
-        printf("The decimal value for opcode = %d \n", decOp);
-
+        printf("The decimal value for opcode = %d  ==> ", decOp);
+        opSwitch(decOp, rType, iType);
     }
 
-	fclose(fptr);
+    printf("Total number of R-Type Instructions = %d \n", rType);
+    printf("Total number of I-Type Instructions = %d \n", iType);
+	
+    fclose(fptr);
 
 	exit(EXIT_SUCCESS);
 }//end of main function.
@@ -223,6 +231,103 @@ void prt32(int num[SIZ]){
 		}
 		//printf("\n"); Removed new line since I have on after opcode printf.  Just testing functionality
 }
+
+int opSwitch(decOp, rType, iType){
+    
+    switch(decOp){
+        case 0:
+            printf(" ADD \n");
+            ++rType;
+            break;
+
+        case 1:
+            printf(" ADDI \n");
+            ++iType;
+            break;
+    
+        case 2:
+            printf(" SUB \n");
+            ++rType;
+            break;
+
+        case 3:
+            printf(" SUBI \n");
+            ++iType;
+            break;
+    
+        case 4:
+            printf(" MUL \n");
+            ++rType;
+            break;
+
+        case 5:
+            printf(" MULI \n");
+            ++iType;
+            break;
+    
+        case 6:
+            printf(" OR \n");
+            ++rType;
+            break;
+
+        case 7:
+            printf(" ORI \n");
+            ++iType;
+            break;
+    
+        case 8:
+            printf(" AND \n");
+            ++rType;
+            break;
+
+        case 9:
+            printf(" ANDI \n");
+            ++iType;
+            break;
+
+        case 10:
+            printf(" XOR \n");
+            ++rType;
+            break;
+
+        case 11:
+            printf(" XORI \n");
+            ++iType;
+            break;
+    
+        case 12:
+            printf(" LDW \n");
+            ++iType;
+            break;
+    
+        case 13:
+            printf(" STW \n");
+            ++iType;
+            break;
+    
+        case 14:
+            printf(" BZ \n");
+            ++iType;
+            break;
+    
+        case 15:
+            printf(" BEQ \n");
+            ++iType;
+            break;
+    
+        case 16:
+            printf(" JR \n");
+            ++iType;
+            break;
+    
+        case 17:
+            printf(" HALT \n");
+            ++iType;
+            break;
+    
+    return 0;
+    } //end of switch statement
+} //end of function
 
 /*
     int opcode[] = {1, 0, 1, 0, 1, 0};

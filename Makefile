@@ -3,11 +3,11 @@
 ########################################################################
 
 
-main: parse.o 
-	gcc -g -o main parse.o -lm
+main: main.o 
+	gcc -g -o main main.o -lm
 
-parse.o: parse.c header.h
-	gcc -g -c parse.c 
+main.o: main.c header.h
+	gcc -g -c main.c 
 
 clean: 
-	rm main parse.o
+	rm main main.o

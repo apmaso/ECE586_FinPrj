@@ -232,97 +232,97 @@ void prt32(int num[SIZ]){
 		//printf("\n"); Removed new line since I have on after opcode printf.  Just testing functionality
 }
 
-int opSwitch(decOp, rType, iType){
+int opSwitch(int decOp, int rType, int iType){
     
     switch(decOp){
         case 0:
             printf(" ADD \n");
-            ++rType;
+            rType = (rType + 1);
             break;
 
         case 1:
             printf(" ADDI \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 2:
             printf(" SUB \n");
-            ++rType;
+            rType = (rType + 1);
             break;
 
         case 3:
             printf(" SUBI \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 4:
             printf(" MUL \n");
-            ++rType;
+            rType = (rType + 1);
             break;
 
         case 5:
             printf(" MULI \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 6:
             printf(" OR \n");
-            ++rType;
+            rType = (rType + 1);
             break;
 
         case 7:
             printf(" ORI \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 8:
             printf(" AND \n");
-            ++rType;
+            rType = (rType + 1);
             break;
 
         case 9:
             printf(" ANDI \n");
-            ++iType;
+            iType = (iType + 1);
             break;
 
         case 10:
             printf(" XOR \n");
-            ++rType;
+            rType = (rType + 1);
             break;
 
         case 11:
             printf(" XORI \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 12:
             printf(" LDW \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 13:
             printf(" STW \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 14:
             printf(" BZ \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 15:
             printf(" BEQ \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 16:
             printf(" JR \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
         case 17:
             printf(" HALT \n");
-            ++iType;
+            iType = (iType + 1);
             break;
     
     return 0;

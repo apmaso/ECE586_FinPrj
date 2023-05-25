@@ -14,7 +14,11 @@ int parse(char myString[10], int num[SIZ]);
 void opSwitch(int decOp);
 void prt32(int num[SIZ]);
 
-  
+#define OPLEN 6
+#define REGLEN 5
+#define IMMLEN 16 
+
+
 
 int main() {
 	char myString[10];
@@ -27,8 +31,19 @@ int main() {
 
     int opcode[6];
     int decOp = 0;
-    int opLen = 6;
 
+    int binRs[5];
+    int decRs = 0;
+    
+    int binRt[5];
+    int decRt = 0;
+
+    int binRd[5];
+    int decRd = 0;
+
+    int binImm[16];
+    int decImm = 0;
+    
     mystats.itype = 0;
     mystats.rtype = 0;
 
@@ -40,15 +55,51 @@ int main() {
 		//hex2bin(myString, num);
 		parse(myString, num);
 
+        // parse and decode the opcode
         for (int i=0; i<6; i++){
             opcode[i] = num[i];
         }
-
-        decOp = bin2dec(opcode, opLen);
-        printf("The decimal value for opcode = %d  ==> ", decOp);
+        decOp = bin2dec(opcode, OPLEN);
+        printf("| Opcode: ");
         opSwitch(decOp);
-    }
 
+        // parse and decode the source register, Rs
+        for (int j=0; j<5; j++){
+            binRs[j] = num[j+6];
+        }
+        decRs = bin2dec(binRs, REGLEN);
+        printf("| Rs = R%d", decRs);
+        
+        // parse and decode the target register, Rt
+        for (int k=0; k<5; k++){
+            binRt[k] = num[k+11];
+        }
+        decRt = bin2dec(binRt, REGLEN);
+        printf(" | Rt = R%d", decRt);
+    
+        // Is the instruction rtype?
+        if ((decOp % 2 == 0) && (decOp < 11)) {
+
+            // parse and decode the destination register, Rd
+            for (int l=0; l<5; l++){
+                binRd[l] = num[l+16];
+            }
+            decRd = bin2dec(binRd, REGLEN);
+            printf(" | Rd = R%d \n", decRd);
+        }
+        // If instruction isn't rtype, then its itype
+        else {
+            
+            // parse and decode the immediate value
+            for (int m=0; m<16; m++){
+                binImm[m] = num[m+16];
+            }
+            decImm = bin2dec(binImm, IMMLEN);
+            printf(" | Imm = %d \n", decImm);
+
+        }
+    
+    }
     printf("Total number of R-Type Instructions = %d \n", mystats.rtype);
     printf("Total number of I-Type Instructions = %d \n", mystats.itype);
 	
@@ -246,92 +297,92 @@ void opSwitch(int decOp) {
     
     switch(decOp){
         case 0:
-            printf(" ADD \n");
+            printf(" ADD  ");
             mystats.rtype++;
             break;
 
         case 1:
-            printf(" ADDI \n");
+            printf(" ADDI ");
             mystats.itype++;
             break;
     
         case 2:
-            printf(" SUB \n");
+            printf(" SUB  ");
             mystats.rtype++;
             break;
 
         case 3:
-            printf(" SUBI \n");
+            printf(" SUBI ");
             mystats.itype++;
             break;
     
         case 4:
-            printf(" MUL \n");
+            printf(" MUL  ");
             mystats.rtype++;
             break;
 
         case 5:
-            printf(" MULI \n");
+            printf(" MULI ");
             mystats.itype++;
             break;
     
         case 6:
-            printf(" OR \n");
+            printf(" OR   ");
             mystats.rtype++;
             break;
 
         case 7:
-            printf(" ORI \n");
+            printf(" ORI  ");
             mystats.itype++;
             break;
     
         case 8:
-            printf(" AND \n");
+            printf(" AND  ");
             mystats.rtype++;
             break;
 
         case 9:
-            printf(" ANDI \n");
+            printf(" ANDI ");
             mystats.itype++;
             break;
 
         case 10:
-            printf(" XOR \n");
+            printf(" XOR  ");
             mystats.rtype++;
             break;
 
         case 11:
-            printf(" XORI \n");
+            printf(" XORI ");
             mystats.itype++;
             break;
     
         case 12:
-            printf(" LDW \n");
+            printf(" LDW  ");
             mystats.itype++;
             break;
     
         case 13:
-            printf(" STW \n");
+            printf(" STW  ");
             mystats.itype++;
             break;
     
         case 14:
-            printf(" BZ \n");
+            printf(" BZ   ");
             mystats.itype++;
             break;
     
         case 15:
-            printf(" BEQ \n");
+            printf(" BEQ  ");
             mystats.itype++;
             break;
     
         case 16:
-            printf(" JR \n");
+            printf(" JR   ");
             mystats.itype++;
             break;
     
         case 17:
-            printf(" HALT \n");
+            printf(" HALT ");
             mystats.itype++;
             break;
     } //end of switch statement

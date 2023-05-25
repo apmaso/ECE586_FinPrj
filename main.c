@@ -7,12 +7,28 @@ struct statistics {
 
 struct statistics mystats;
 
+struct instruction {
+    int opcode;
+    int Rs;
+    int Rt;
+    // Rd = -1 indicates itype instruction
+    int Rd;
+    int Imm;
+};
+
+struct instruction inst1;
+struct instruction inst2;
+struct instruction inst3;
+struct instruction inst4;
+struct instruction inst5;
+
 int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int array[], int len);
 int bin2dec_2sComp(int array[], int len);
 int parse(char myString[10], int num[SIZ]);
 void opSwitch(int decOp);
 void prt32(int num[SIZ]);
+void shift(int opcode, int Rs, int Rt, int Rd, int Imm); 
 
 #define OPLEN 6
 #define REGLEN 5
@@ -86,6 +102,9 @@ int main() {
             }
             decRd = bin2dec(binRd, REGLEN);
             printf(" | Rd = R%d \n", decRd);
+
+            // shift register for rtype (Imm = 0)
+            shift(decOp, decRs, decRt, decRd, 0);
         }
         // If instruction isn't rtype, then its itype
         else {
@@ -97,12 +116,19 @@ int main() {
             decImm = bin2dec(binImm, IMMLEN);
             printf(" | Imm = %d \n", decImm);
 
+            // shift register for itype (Rd = -1)
+            shift(decOp, decRs, decRt, -1, decImm);
         }
-    
     }
     printf("Total number of R-Type Instructions = %d \n", mystats.rtype);
     printf("Total number of I-Type Instructions = %d \n", mystats.itype);
-	
+    printf("The last instruction had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst1.opcode, inst1.Rs, inst1.Rt, inst1.Rd, inst1.Imm);
+    printf("The instruction before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst2.opcode, inst2.Rs, inst2.Rt, inst2.Rd, inst2.Imm);
+    printf("The instruction 2 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst3.opcode, inst3.Rs, inst3.Rt, inst3.Rd, inst3.Imm);
+    printf("The instruction 3 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst4.opcode, inst4.Rs, inst4.Rt, inst4.Rd, inst4.Imm);
+    printf("The instruction 4 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst5.opcode, inst5.Rs, inst5.Rt, inst5.Rd, inst5.Imm);
+
+
     fclose(fptr);
 
 	exit(EXIT_SUCCESS);
@@ -388,35 +414,21 @@ void opSwitch(int decOp) {
     } //end of switch statement
 } //end of function
 
-/*
-    int opcode[] = {1, 0, 1, 0, 1, 0};
-    int decOp = 0;
-    int decLen = 6;
+void shift(int opcode, int Rs, int Rt, int Rd, int Imm) {
+    
+    // using assignment to copy entire struct for now... could use memcopy
+    // or could also implement with arrays and a true shift register
+    inst5 = inst4;
+    inst4 = inst3;
+    inst3 = inst2;
+    inst2 = inst1;
+    inst1.opcode = opcode;
+    inst1.Rs = Rs;
+    inst1.Rt = Rt;
+    inst1.Rs = Rs;
+    inst1.Imm = Imm;
 
-    int Rs[] = {1, 0, 1, 0, 1};
-    int decRs = 0;
-    int RsLen = 5;
-	
-    int Rt[] = {0, 0, 0, 1, 1};
-    int decRt = 0;
-    int RtLen = 5;
-
-    int imm[] = {1, 1, 1, 1, 0};
-    int decImm = 0;
-    int immLen = 5;
-
-
-    decOp = bin2dec(opcode, opLen);
-    decRs = bin2dec(Rs, RsLen);
-    decRt = bin2dec(Rt, RtLen);
-    decImm = bin2dec_2sComp(imm, immLen);
-
-
-    printf("The decimal value for opcode = %d \n", decOp);
-    printf("The decimal value for Rs = %d \n", decRs);
-    printf("The decimal value for Rt = %d \n", decRt);
-    printf("The decimal value for Imm = %d \n", decImm);
-*/
+} //end of shift register function 
 
 int bin2dec_2sComp(int array[], int len) {
     

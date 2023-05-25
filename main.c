@@ -1,11 +1,20 @@
 #include "header.h"
 
+struct statistics {
+    int itype;
+    int rtype;
+};
+
+struct statistics mystats;
+
 int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int array[], int len);
 int bin2dec_2sComp(int array[], int len);
 int parse(char myString[10], int num[SIZ]);
-int opSwitch(int decOp, int rType, int iType);
+void opSwitch(int decOp);
 void prt32(int num[SIZ]);
+
+  
 
 int main() {
 	char myString[10];
@@ -20,10 +29,11 @@ int main() {
     int decOp = 0;
     int opLen = 6;
 
-    int rType = 0;
-    int iType = 0;
+    mystats.itype = 0;
+    mystats.rtype = 0;
 
-	fptr = fopen("imageSHORT.txt", "r");
+
+    fptr = fopen("imageSHORT.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
@@ -31,16 +41,16 @@ int main() {
 		parse(myString, num);
 
         for (int i=0; i<6; i++){
-            opcode[i] = num[(i)];
+            opcode[i] = num[i];
         }
 
         decOp = bin2dec(opcode, opLen);
         printf("The decimal value for opcode = %d  ==> ", decOp);
-        opSwitch(decOp, rType, iType);
+        opSwitch(decOp);
     }
 
-    printf("Total number of R-Type Instructions = %d \n", rType);
-    printf("Total number of I-Type Instructions = %d \n", iType);
+    printf("Total number of R-Type Instructions = %d \n", mystats.rtype);
+    printf("Total number of I-Type Instructions = %d \n", mystats.itype);
 	
     fclose(fptr);
 
@@ -232,100 +242,98 @@ void prt32(int num[SIZ]){
 		//printf("\n"); Removed new line since I have on after opcode printf.  Just testing functionality
 }
 
-int opSwitch(int decOp, int rType, int iType){
+void opSwitch(int decOp) {
     
     switch(decOp){
         case 0:
             printf(" ADD \n");
-            rType = (rType + 1);
+            mystats.rtype++;
             break;
 
         case 1:
             printf(" ADDI \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 2:
             printf(" SUB \n");
-            rType = (rType + 1);
+            mystats.rtype++;
             break;
 
         case 3:
             printf(" SUBI \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 4:
             printf(" MUL \n");
-            rType = (rType + 1);
+            mystats.rtype++;
             break;
 
         case 5:
             printf(" MULI \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 6:
             printf(" OR \n");
-            rType = (rType + 1);
+            mystats.rtype++;
             break;
 
         case 7:
             printf(" ORI \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 8:
             printf(" AND \n");
-            rType = (rType + 1);
+            mystats.rtype++;
             break;
 
         case 9:
             printf(" ANDI \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
 
         case 10:
             printf(" XOR \n");
-            rType = (rType + 1);
+            mystats.rtype++;
             break;
 
         case 11:
             printf(" XORI \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 12:
             printf(" LDW \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 13:
             printf(" STW \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 14:
             printf(" BZ \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 15:
             printf(" BEQ \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 16:
             printf(" JR \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
     
         case 17:
             printf(" HALT \n");
-            iType = (iType + 1);
+            mystats.itype++;
             break;
-    
-    return 0;
     } //end of switch statement
 } //end of function
 

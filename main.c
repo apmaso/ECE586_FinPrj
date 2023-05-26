@@ -117,7 +117,7 @@ int main() {
             printf(" | Imm = %d \n", decImm);
 
             // shift register for itype (Rd = -1)
-            shift(decOp, decRs, decRt, -1, decImm);
+            shift(decOp, decRs, decRt, 0, decImm);
         }
     }
     printf("Total number of R-Type Instructions = %d \n", mystats.rtype);
@@ -425,7 +425,7 @@ void shift(int opcode, int Rs, int Rt, int Rd, int Imm) {
     inst1.opcode = opcode;
     inst1.Rs = Rs;
     inst1.Rt = Rt;
-    inst1.Rs = Rs;
+    inst1.Rd = Rd;
     inst1.Imm = Imm;
 
 } //end of shift register function 

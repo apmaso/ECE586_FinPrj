@@ -64,7 +64,7 @@ int main() {
     mystats.rtype = 0;
 
 
-    fptr = fopen("imageSHORT.txt", "r");
+    fptr = fopen("imageShort2.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);

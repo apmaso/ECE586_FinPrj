@@ -1,9 +1,14 @@
 #include "header.h"
 
 struct statistics {
+    int totalInst;
     int itype;
     int rtype;
     int pc;
+    int arithmetic;
+    int logical;
+    int memAccess;
+    int ctrlTransfer;
 };
 
 struct statistics mystats;
@@ -59,9 +64,13 @@ int main() {
     mystats.itype = 0;
     mystats.rtype = 0;
     mystats.pc = 0;
+    mystats.arithmetic = 0;
+    mystats.logical = 0;
+    mystats.memAccess = 0;
+    mystats.ctrlTransfer = 0;
+    mystats.totalInst = 0;
 
-
-    fptr = fopen("imageTB.txt", "r");
+    fptr = fopen("imageMedium.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
@@ -108,10 +117,8 @@ int main() {
                 binRd[l] = num[l+16];
             }
             decRd = bin2dec(binRd, REGLEN);
+            decImm = 0;
             printf(" | Rd = R%d \n", decRd);
-
-            // shift register for rtype (Imm = 0)
-            shift(decOp, decRs, decRt, decRd, 0);
         }
         // If instruction isn't rtype, then its itype
         else {
@@ -121,18 +128,21 @@ int main() {
                 binImm[m] = num[m+16];
             }
             decImm = bin2dec(binImm, IMMLEN);
+            decRd = 0;
             printf(" | Imm = %d \n", decImm);
-
-            // shift register for itype (Rd = -1)
-            shift(decOp, decRs, decRt, 0, decImm);
         }
-        // Update the program counter
-        mystats.pc += 4;
-
+    
+        // send decoded values to shift register
+        shift(decOp, decRs, decRt, decRd, decImm);
     }
+    printf("The program counter has a final value of %d \n", mystats.pc);
     printf("Total number of R-Type Instructions = %d \n", mystats.rtype);
     printf("Total number of I-Type Instructions = %d \n", mystats.itype);
-    printf("The program counter has a final value of %d \n", mystats.pc);
+    printf("Total number of Arithmetic Instructions = %d \n", mystats.arithmetic);
+    printf("Total number of Logical Instructions = %d \n", mystats.logical);
+    printf("Total number of Memory Access Instructions = %d \n", mystats.memAccess);
+    printf("Total number of Control Transfer Instructions = %d \n", mystats.ctrlTransfer);
+    printf("Total number of Instructions = %d \n", mystats.totalInst);
     printf("The last instruction had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst1.opcode, inst1.Rs, inst1.Rt, inst1.Rd, inst1.Imm);
     printf("The instruction before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst2.opcode, inst2.Rs, inst2.Rt, inst2.Rd, inst2.Imm);
     printf("The instruction 2 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst3.opcode, inst3.Rs, inst3.Rt, inst3.Rd, inst3.Imm);
@@ -336,91 +346,110 @@ void opSwitch(int decOp) {
         case 0:
             printf(" ADD  ");
             mystats.rtype++;
+            mystats.arithmetic++;
             break;
 
         case 1:
             printf(" ADDI ");
             mystats.itype++;
+            mystats.arithmetic++;
             break;
     
         case 2:
             printf(" SUB  ");
             mystats.rtype++;
+            mystats.arithmetic++;
             break;
 
         case 3:
             printf(" SUBI ");
             mystats.itype++;
+            mystats.arithmetic++;
             break;
     
         case 4:
             printf(" MUL  ");
             mystats.rtype++;
+            mystats.arithmetic++;
             break;
 
         case 5:
             printf(" MULI ");
             mystats.itype++;
+            mystats.arithmetic++;
             break;
     
         case 6:
             printf(" OR   ");
             mystats.rtype++;
+            mystats.logical++;
             break;
 
         case 7:
             printf(" ORI  ");
             mystats.itype++;
+            mystats.logical++;
             break;
     
         case 8:
             printf(" AND  ");
             mystats.rtype++;
+            mystats.logical++;
             break;
 
         case 9:
             printf(" ANDI ");
             mystats.itype++;
+            mystats.logical++;
             break;
 
         case 10:
             printf(" XOR  ");
             mystats.rtype++;
+            mystats.logical++;
             break;
 
         case 11:
             printf(" XORI ");
             mystats.itype++;
+            mystats.logical++;
             break;
     
         case 12:
             printf(" LDW  ");
             mystats.itype++;
+            mystats.memAccess++;
             break;
     
         case 13:
             printf(" STW  ");
             mystats.itype++;
+            mystats.memAccess++;
             break;
     
         case 14:
             printf(" BZ   ");
             mystats.itype++;
+            mystats.ctrlTransfer++;
             break;
     
         case 15:
             printf(" BEQ  ");
             mystats.itype++;
+            mystats.ctrlTransfer++;
             break;
     
         case 16:
             printf(" JR   ");
             mystats.itype++;
+            mystats.ctrlTransfer++;
             break;
     
         case 17:
             printf(" HALT ");
             mystats.itype++;
+            // I am not 100% confident that HALT counts as control transfer instruction...
+            mystats.ctrlTransfer++;
             break;
     } //end of switch statement
 } //end of function
@@ -438,6 +467,10 @@ void shift(int opcode, int Rs, int Rt, int Rd, int Imm) {
     inst1.Rt = Rt;
     inst1.Rd = Rd;
     inst1.Imm = Imm;
+
+    // update stats
+    mystats.totalInst++;
+    mystats.pc = (mystats.pc + 4);
 
 } //end of shift register function 
 

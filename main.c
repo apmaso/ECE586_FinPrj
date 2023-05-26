@@ -27,6 +27,8 @@ struct instruction inst3;
 struct instruction inst4;
 struct instruction inst5;
 
+// int registers[31];
+
 int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int array[], int len);
 int bin2dec_2sComp(int array[], int len);
@@ -69,6 +71,12 @@ int main() {
     mystats.memAccess = 0;
     mystats.ctrlTransfer = 0;
     mystats.totalInst = 0;
+
+    /* Initialize Reg array to 0
+    for (int a=0; a<32; a++;) {
+        registers[a] = 0;
+    }
+    */
 
     fptr = fopen("imageTB.txt", "r");
 
@@ -127,7 +135,7 @@ int main() {
             for (int m=0; m<16; m++){
                 binImm[m] = num[m+16];
             }
-            decImm = bin2dec(binImm, IMMLEN);
+            decImm = bin2dec_2sComp(binImm, IMMLEN);
             decRd = 0;
             printf(" | Imm = %d \n", decImm);
         }

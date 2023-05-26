@@ -3,6 +3,7 @@
 struct statistics {
     int itype;
     int rtype;
+    int pc;
 };
 
 struct statistics mystats;
@@ -11,7 +12,6 @@ struct instruction {
     int opcode;
     int Rs;
     int Rt;
-    // Rd = -1 indicates itype instruction
     int Rd;
     int Imm;
 };
@@ -47,24 +47,21 @@ int main() {
 
     int opcode[6];
     int decOp = 0;
-
     int binRs[5];
     int decRs = 0;
-    
     int binRt[5];
     int decRt = 0;
-
     int binRd[5];
     int decRd = 0;
-
     int binImm[16];
     int decImm = 0;
     
     mystats.itype = 0;
     mystats.rtype = 0;
+    mystats.pc = 0;
 
 
-    fptr = fopen("imageShort2.txt", "r");
+    fptr = fopen("imageTB.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
@@ -84,14 +81,24 @@ int main() {
             binRs[j] = num[j+6];
         }
         decRs = bin2dec(binRs, REGLEN);
-        printf("| Rs = R%d", decRs);
+        if (decRs<10) {
+            printf("| Rs = R%d ", decRs);
+        }
+        else {
+            printf("| Rs = R%d", decRs);
+        }
         
         // parse and decode the target register, Rt
         for (int k=0; k<5; k++){
             binRt[k] = num[k+11];
         }
         decRt = bin2dec(binRt, REGLEN);
-        printf(" | Rt = R%d", decRt);
+        if (decRt<10) {
+            printf("| Rt = R%d ", decRt);
+        }
+        else {
+            printf("| Rt = R%d", decRt);
+        }
     
         // Is the instruction rtype?
         if ((decOp % 2 == 0) && (decOp < 11)) {
@@ -119,9 +126,13 @@ int main() {
             // shift register for itype (Rd = -1)
             shift(decOp, decRs, decRt, 0, decImm);
         }
+        // Update the program counter
+        mystats.pc += 4;
+
     }
     printf("Total number of R-Type Instructions = %d \n", mystats.rtype);
     printf("Total number of I-Type Instructions = %d \n", mystats.itype);
+    printf("The program counter has a final value of %d \n", mystats.pc);
     printf("The last instruction had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst1.opcode, inst1.Rs, inst1.Rt, inst1.Rd, inst1.Imm);
     printf("The instruction before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst2.opcode, inst2.Rs, inst2.Rt, inst2.Rd, inst2.Imm);
     printf("The instruction 2 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst3.opcode, inst3.Rs, inst3.Rt, inst3.Rd, inst3.Imm);

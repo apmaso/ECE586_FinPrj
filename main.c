@@ -70,7 +70,7 @@ int main() {
     mystats.ctrlTransfer = 0;
     mystats.totalInst = 0;
 
-    fptr = fopen("imageMedium.txt", "r");
+    fptr = fopen("imageTB.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);

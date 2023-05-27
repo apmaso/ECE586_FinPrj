@@ -28,7 +28,7 @@ struct instruction inst4;
 struct instruction inst5;
 
 // Int array for general purpose registers
-int gpReg[31];
+int GPReg[31];
 
 int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int array[], int len);
@@ -73,7 +73,7 @@ int main() {
 
     // Initialize Reg array to 0
     for (int a=0; a<31; a++) {
-        gpReg[a] = 0;
+        GPReg[a] = 0;
     }
     
 
@@ -89,32 +89,18 @@ int main() {
             opcode[i] = num[i];
         }
         decOp = bin2dec(opcode, OPLEN);
-        printf(" Opcode: ");
-        opSwitch(decOp);
 
         // parse and decode the source register, Rs
         for (int j=0; j<5; j++){
             binRs[j] = num[j+6];
         }
         decRs = bin2dec(binRs, REGLEN);
-        if (decRs<10) {
-            printf("| Rs = R%d ", decRs);
-        }
-        else {
-            printf("| Rs = R%d", decRs);
-        }
         
         // parse and decode the target register, Rt
         for (int k=0; k<5; k++){
             binRt[k] = num[k+11];
         }
         decRt = bin2dec(binRt, REGLEN);
-        if (decRt<10) {
-            printf("| Rt = R%d ", decRt);
-        }
-        else {
-            printf("| Rt = R%d", decRt);
-        }
     
         // Is the instruction rtype?
         if ((decOp % 2 == 0) && (decOp < 11)) {
@@ -125,7 +111,6 @@ int main() {
             }
             decRd = bin2dec(binRd, REGLEN);
             decImm = 0;
-            printf(" | Rd = R%d \n", decRd);
         }
         // If instruction isn't rtype, then its itype
         else {
@@ -136,12 +121,42 @@ int main() {
             }
             decImm = bin2dec_2sComp(binImm, IMMLEN);
             decRd = 0;
-            printf(" | Imm = %d \n", decImm);
         }
     
-        // send decoded values to shift register
+
+        // send decoded decimal values to shift register
         shift(decOp, decRs, decRt, decRd, decImm);
+        
+        // Display Opcode and Call Switch function to execute inst
+        printf(" Opcode: ");
+        opSwitch(decOp);
+       
+        // Display Source Register 
+        if (decRs<10) {
+            printf("| Rs = R%d ", decRs);
+        }
+        else {
+            printf("| Rs = R%d", decRs);
+        }
+        
+        // Display Target Register 
+        if (decRt<10) {
+            printf("| Rt = R%d ", decRt);
+        }
+        else {
+            printf("| Rt = R%d", decRt);
+        }
+
+        // Is the instruction rtype? Then display Rd
+        // If not, then display the Imm value
+        if ((decOp % 2 == 0) && (decOp < 11)) {
+            printf(" | Rd = R%d \n", decRd);
+        }
+        else {
+            printf(" | Imm = %d \n", decImm);
+        }
     }
+    
     printf("The program counter has a final value of %d \n", mystats.pc);
     printf("Total number of R-Type Instructions = %d \n", mystats.rtype);
     printf("Total number of I-Type Instructions = %d \n", mystats.itype);
@@ -155,7 +170,11 @@ int main() {
     printf("The instruction 2 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst3.opcode, inst3.Rs, inst3.Rt, inst3.Rd, inst3.Imm);
     printf("The instruction 3 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst4.opcode, inst4.Rs, inst4.Rt, inst4.Rd, inst4.Imm);
     printf("The instruction 4 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst5.opcode, inst5.Rs, inst5.Rt, inst5.Rd, inst5.Imm);
-
+    
+    for (int b=0; b<31; b++) {
+        printf("General Purpose Registers \n");
+        printf("Register %d = %d \n", b, GPReg[b]);
+    }
 
     fclose(fptr);
 
@@ -354,12 +373,14 @@ void opSwitch(int decOp) {
             printf(" ADD  ");
             mystats.rtype++;
             mystats.arithmetic++;
+            GPReg[inst1.Rd] = (GPReg[inst1.Rs] + GPReg[inst1.Rt]); 
             break;
 
         case 1:
             printf(" ADDI ");
             mystats.itype++;
             mystats.arithmetic++;
+            GPReg[inst1.Rt] = (GPReg[inst1.Rs] + inst1.Imm); 
             break;
     
         case 2:

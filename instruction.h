@@ -1,15 +1,14 @@
 
-typedef unsigned int INST_TYPE;
-
 struct instruction {
 	int opcode;
-	char opcode_namep[5];
+	char opcode_name[5];
 	
 	int rs;
 	int rt;
 	int rd;
+	int imm;
 
-	INST_TYPE TYPE;
+	int TYPE;
 	int ready;
 };
 

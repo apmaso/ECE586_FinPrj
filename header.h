@@ -7,4 +7,8 @@
 #include "instruction.h"
 
 #define SIZ 32
+#define OPLEN 6
+#define REGLEN 5
+#define IMMLEN 16 
+
 

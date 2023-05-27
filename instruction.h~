@@ -1,18 +1,16 @@
 
-typedef unsigned int INST_TYPE;
-
 struct instruction {
 	int opcode;
-	char opcode_namep[5];
+	char opcode_name[5];
 	
 	int rs;
 	int rt;
 	int rd;
 
-	INST_TYPE TYPE;
+	int TYPE;
 	int ready;
 };
 
-void print_inst(struct instruction2);
-struct instruction2 fill_instruction2(int bin_inst[], int len);
+void print_inst(struct instruction);
+struct instruction fill_instruction(int bin_inst[], int len);
 

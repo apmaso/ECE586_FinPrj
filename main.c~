@@ -27,7 +27,7 @@ struct instruction inst5;
 int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int array[], int len);
 int bin2dec_2sComp(int array[], int len);
-int parse(char myString[10], int num[SIZ]);
+int mem_img2bin(char myString[10], int num[SIZ]);
 void opSwitch(int decOp);
 void prt32(int num[SIZ]);
 int extract_opcode(int bin_inst[], int opLen);
@@ -35,28 +35,24 @@ int extract_rs(int bin_inst[]);
 int extract_rt(int bin_inst[]);
 int extract_rd(int bin_inst[]);
 int extract_immediate(int bin_inst[]);
-void print_stuff(int bin_inst[]);
+int extract_type(int bin_inst[]);
+void print_program(int linect);
 const char *extract_opcode_str(int opcode);
+struct instruction parse(int num[SIZ]);
 
 struct instruction program[500]; //TODO FIXME
 
 void shift(int opcode, int Rs, int Rt, int Rd, int Imm); 
 
-#define OPLEN 6
-#define REGLEN 5
-#define IMMLEN 16 
-
-
-
 int main() {
 	struct instruction instr;
 	char myString[10];
 	FILE *fptr;
+	int num[SIZ];
 
+	/*
 	char letter = 'Z';
 	int i_val = 99;
-
-	int num[SIZ];
 
 	int opcode[6];
 	int decOp = 0;
@@ -78,15 +74,17 @@ int main() {
 
 	mystats.itype = 0;
 	mystats.rtype = 0;
-
-
+*/
+	int linect = 0;
 	fptr = fopen("imageShort2.txt", "r");
-
+//FIXME line83, pass the name of the file as a variable. i.e. arg1.
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
 		//hex2bin(myString, num);
-		parse(myString, num);
-
+		mem_img2bin(myString, num);
+		program[linect++]=parse(num);
+		//struct instruction an_instruction=parse(num);
+		/*
 		// parse and decode the opcode
 		for (int i=0; i<6; i++){
 			opcode[i] = num[i];
@@ -96,6 +94,7 @@ int main() {
 		opSwitch(decOp);
 		printf("\n");
 		//print_stuff(num);
+		*/
 		/*
 		// parse and decode the source register, Rs
 		for (int j=0; j<5; j++){
@@ -138,7 +137,7 @@ int main() {
 		shift(decOp, decRs, decRt, 0, decImm);
 		}
 		*/
-		print_stuff(num);
+		print_program(linect);
 	}
 	//printf("Total number of R-Type Instructions = %d \n", mystats.rtype);
 	//printf("Total number of I-Type Instructions = %d \n", mystats.itype);
@@ -154,7 +153,7 @@ int main() {
 	exit(EXIT_SUCCESS);
 }//end of main function.
 
-int parse(char myString[10], int num[SIZ]){
+int mem_img2bin(char myString[10], int num[SIZ]){
 	//printf("test\n");
 	int a = 0;
 	int b = 0;
@@ -314,9 +313,25 @@ int parse(char myString[10], int num[SIZ]){
 			num[d]=1;
 		}
 	}//close forloop
-	prt32(num);
+	//prt32(num);
 	return 0;
-}//close parse function
+}//close mem_img2bin function
+
+
+struct instruction parse(int num[SIZ]){
+	struct instruction an_instruction;	
+	an_instruction.opcode=extract_opcode(num, OPLEN);
+	strcpy(an_instruction.opcode_name,extract_opcode_str(an_instruction.opcode));
+	an_instruction.rs=extract_rs(num);
+	an_instruction.rt=extract_rt(num);
+	an_instruction.rd=extract_rd(num);
+	an_instruction.imm=extract_imm(num);
+	an_instruction.TYPE=extract_type(num);
+	an_instruction.ready=0;
+
+
+	return an_instruction;
+}
 
 void prt32(int num[SIZ]){
 	int count = 0;
@@ -426,7 +441,7 @@ void opSwitch(int decOp) {
 			break;
 	} //end of switch statement
 } //end of function
-
+/*
 void shift(int opcode, int Rs, int Rt, int Rd, int Imm) {
 
 	// using assignment to copy entire struct for now... could use memcopy
@@ -442,7 +457,7 @@ void shift(int opcode, int Rs, int Rt, int Rd, int Imm) {
 	inst1.imm = Imm;
 
 } //end of shift register function 
-
+*/
 int bin2dec_2sComp(int array[], int len) {
 
 	// Decimal value to be returned
@@ -619,65 +634,17 @@ const char* extract_opcode_str(int opcode){
 		return dec_imm;
 	}
 
-	void print_stuff(int bin_inst[]){
-		int type = extract_type(bin_inst);
+	void print_program(int linect){
 
-		int op=extract_opcode(bin_inst, 6);
-		int rs=extract_rs(bin_inst);
-		int rt=extract_rt(bin_inst);
-		int rd, imm; 
-		if(type==0)
-			rd=extract_rd(bin_inst);
-		if(type==1)
-			imm=extract_immediate(bin_inst);
+		for(int i=0;i<linect;i++){
 
 
+		if(program[i].TYPE==0)
+			printf("%s R%d, R%d R%d \n", program[i].opcode_name, program[i].rs, program[i].rt, program[i].rd);
 
-		const char * inst_str = extract_opcode_str(op);
-
-/*
-		if(op==0)
-			strcpy(inst_str, "ADD");
-		if(op==1)
-			strcpy(inst_str, "ADDI");
-		if(op==2)
-			strcpy(inst_str, "SUB");
-		if(op==3)
-			strcpy(inst_str, "SUBI");
-		if(op==4)
-			strcpy(inst_str, "MUL");
-		if(op==5)
-			strcpy(inst_str, "MULI");
-		if(op==6)
-			strcpy(inst_str, "OR");
-		if(op==7)
-			strcpy(inst_str, "ORI");
-		if(op==8)
-			strcpy(inst_str, "AND");
-		if(op==9)
-			strcpy(inst_str, "ANDI");
-		if(op==10)
-			strcpy(inst_str, "XOR");
-		if(op==11)
-			strcpy(inst_str, "XORI");
-		if(op==12)
-			strcpy(inst_str, "LDW");
-		if(op==13)
-			strcpy(inst_str, "STW");
-		if(op==14)
-			strcpy(inst_str, "BZ");
-		if(op==15)
-			strcpy(inst_str, "BEQ");
-		if(op==16)
-			strcpy(inst_str, "JR");
-		if(op==17)
-			strcpy(inst_str, "HALT");
-*/
-		if(type==0)
-			printf("%s R%d, R%d R%d \n", inst_str, rs, rt, rd);
-
-		if(type==1)
-			printf("%s R%d, R%d %d \n", inst_str, rs, rt, imm);
+		if(program[i].TYPE==1)
+			printf("%s R%d, R%d %d \n", program[i].opcode_name, program[i].rs, program[i].rt, program[i].imm);
+		}
 	}
 
 	struct instruction fill_instruction(int bin_inst[], int len){

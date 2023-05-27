@@ -3,11 +3,18 @@
 ########################################################################
 
 
-main: main.o 
-	gcc -g -o main main.o -lm
+main: main.o parse.o
+	gcc main.o parse.o -o main -lm
 
-main.o: main.c header.h
-	gcc -g -c main.c 
+main.o: main.c
+	gcc -c -g -Wall main.c
 
-clean: 
-	rm main main.o
+parse.o: parse.c header.h instruction.h
+	gcc -c -g -Wall parse.c
+
+clean:
+	rm*.o main
+
+
+
+

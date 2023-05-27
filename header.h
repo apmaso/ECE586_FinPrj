@@ -3,12 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include <string.h>
+#include "instruction.h"
 
 #define SIZ 32
-/*
-struct mystruct {
-
-	long int k
-*/
 

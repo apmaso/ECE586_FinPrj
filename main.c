@@ -27,7 +27,8 @@ struct instruction inst3;
 struct instruction inst4;
 struct instruction inst5;
 
-// int registers[31];
+// Int array for general purpose registers
+int gpReg[31];
 
 int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int array[], int len);
@@ -40,8 +41,6 @@ void shift(int opcode, int Rs, int Rt, int Rd, int Imm);
 #define OPLEN 6
 #define REGLEN 5
 #define IMMLEN 16 
-
-
 
 int main() {
 	char myString[10];
@@ -72,13 +71,13 @@ int main() {
     mystats.ctrlTransfer = 0;
     mystats.totalInst = 0;
 
-    /* Initialize Reg array to 0
-    for (int a=0; a<32; a++;) {
-        registers[a] = 0;
+    // Initialize Reg array to 0
+    for (int a=0; a<31; a++) {
+        gpReg[a] = 0;
     }
-    */
+    
 
-    fptr = fopen("imageTB.txt", "r");
+    fptr = fopen("imageAddTB.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
@@ -90,7 +89,7 @@ int main() {
             opcode[i] = num[i];
         }
         decOp = bin2dec(opcode, OPLEN);
-        printf("| Opcode: ");
+        printf(" Opcode: ");
         opSwitch(decOp);
 
         // parse and decode the source register, Rs

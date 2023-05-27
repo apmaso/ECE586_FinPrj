@@ -1,0 +1,23 @@
+0000 0100 0000 0001 0000 0011 1110 1000  Opcode:  ADDI | Rs = R0 | Rt = R1  | Imm = 1000 
+0000 0100 0000 0010 0000 0100 1011 0000  Opcode:  ADDI | Rs = R0 | Rt = R2  | Imm = 1200 
+0000 0000 0000 0000 0011 1000 0000 0000  Opcode:  ADD  | Rs = R0 | Rt = R0  | Rd = R7 
+0000 0000 0000 0000 0100 0000 0000 0000  Opcode:  ADD  | Rs = R0 | Rt = R0  | Rd = R8 
+0000 0000 0000 0000 0100 1000 0000 0000  Opcode:  ADD  | Rs = R0 | Rt = R0  | Rd = R9 
+0000 0000 0000 0000 0101 0000 0000 0000  Opcode:  ADD  | Rs = R0 | Rt = R0  | Rd = R10 
+0000 0100 0000 1011 0000 0000 0011 0010  Opcode:  ADDI | Rs = R0 | Rt = R11 | Imm = 50 
+0000 0100 0000 1100 0000 0000 0010 0000  Opcode:  ADDI | Rs = R0 | Rt = R12 | Imm = 32 
+0000 0100 0010 0001 0000 0000 0000 0100  Opcode:  ADDI | Rs = R1 | Rt = R1  | Imm = 4 
+0000 0100 0100 0010 0000 0000 0000 0100  Opcode:  ADDI | Rs = R2 | Rt = R2  | Imm = 4 
+The program counter has a final value of 40 
+Total number of R-Type Instructions = 4 
+Total number of I-Type Instructions = 6 
+Total number of Arithmetic Instructions = 10 
+Total number of Logical Instructions = 0 
+Total number of Memory Access Instructions = 0 
+Total number of Control Transfer Instructions = 0 
+Total number of Instructions = 10 
+The last instruction had Opcode=1, Rs=2, Rt=2, Rd=0, Imm=4 
+The instruction before last had Opcode=1, Rs=1, Rt=1, Rd=0, Imm=4 
+The instruction 2 before last had Opcode=1, Rs=0, Rt=12, Rd=0, Imm=32 
+The instruction 3 before last had Opcode=1, Rs=0, Rt=11, Rd=0, Imm=50 
+The instruction 4 before last had Opcode=0, Rs=0, Rt=0, Rd=10, Imm=0 

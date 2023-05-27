@@ -426,7 +426,7 @@ void opSwitch(int decOp) {
 			break;
 	} //end of switch statement
 } //end of function
-/*
+
 void shift(int opcode, int Rs, int Rt, int Rd, int Imm) {
 
 	// using assignment to copy entire struct for now... could use memcopy
@@ -442,7 +442,7 @@ void shift(int opcode, int Rs, int Rt, int Rd, int Imm) {
 	inst1.imm = Imm;
 
 } //end of shift register function 
-*/
+
 int bin2dec_2sComp(int array[], int len) {
 
 	// Decimal value to be returned

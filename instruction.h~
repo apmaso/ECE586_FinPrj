@@ -13,6 +13,6 @@ struct instruction {
 	int ready;
 };
 
-void print_inst(struct instruction);
-struct instruction fill_instruction(int bin_inst[], int len);
+void print_inst(struct instruction2);
+struct instruction2 fill_instruction2(int bin_inst[], int len);
 

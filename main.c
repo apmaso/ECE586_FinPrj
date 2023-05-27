@@ -77,7 +77,7 @@ int main() {
     }
     
 
-    fptr = fopen("imageAddTB.txt", "r");
+    fptr = fopen("imageSUBTB.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
@@ -171,10 +171,16 @@ int main() {
     printf("The instruction 3 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst4.opcode, inst4.Rs, inst4.Rt, inst4.Rd, inst4.Imm);
     printf("The instruction 4 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst5.opcode, inst5.Rs, inst5.Rt, inst5.Rd, inst5.Imm);
     
+    printf("General Purpose Registers \n");
     for (int b=0; b<31; b++) {
-        printf("General Purpose Registers \n");
-        printf("Register %d = %d \n", b, GPReg[b]);
+        printf("Register %d = %d | ", b, GPReg[b]);
+    
+        // print out five register values per line
+        if (b%5==0) {
+        printf("\n");
+        }
     }
+
 
     fclose(fptr);
 
@@ -387,12 +393,14 @@ void opSwitch(int decOp) {
             printf(" SUB  ");
             mystats.rtype++;
             mystats.arithmetic++;
+            GPReg[inst1.Rd] = (GPReg[inst1.Rs] - GPReg[inst1.Rt]); 
             break;
 
         case 3:
             printf(" SUBI ");
             mystats.itype++;
             mystats.arithmetic++;
+            GPReg[inst1.Rt] = (GPReg[inst1.Rs] - inst1.Imm); 
             break;
     
         case 4:

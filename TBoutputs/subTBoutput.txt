@@ -1,0 +1,85 @@
+0000 1000 0110 0100 0010 1000 0000 0000  Opcode:  SUB  | Rs = R3 | Rt = R4  | Rd = R5 
+0000 1100 1000 0101 1111 1111 1111 1010  Opcode:  SUBI | Rs = R4 | Rt = R5  | Imm = -6 
+0000 1000 1010 0100 0101 0011 0000 0000  Opcode:  SUB  | Rs = R5 | Rt = R4  | Rd = R10 
+0000 1100 1110 0011 0000 1000 0000 0000  Opcode:  SUBI | Rs = R7 | Rt = R3  | Imm = 2048 
+0000 1000 1000 0101 1001 0000 0000 0000  Opcode:  SUB  | Rs = R4 | Rt = R5  | Rd = R18 
+0000 1100 1010 0100 0000 0000 0110 0011  Opcode:  SUBI | Rs = R5 | Rt = R4  | Imm = 99 
+0000 1000 0100 0110 0101 0010 0000 0000  Opcode:  SUB  | Rs = R2 | Rt = R6  | Rd = R10 
+0000 1100 0110 0100 0000 0000 0011 0110  Opcode:  SUBI | Rs = R3 | Rt = R4  | Imm = 54 
+0000 1000 1110 0011 0000 1000 0000 0000  Opcode:  SUB  | Rs = R7 | Rt = R3  | Rd = R1 
+0000 1100 1010 0100 1111 1111 1010 0010  Opcode:  SUBI | Rs = R5 | Rt = R4  | Imm = -94 
+The program counter has a final value of 40 
+Total number of R-Type Instructions = 5 
+Total number of I-Type Instructions = 5 
+Total number of Arithmetic Instructions = 10 
+Total number of Logical Instructions = 0 
+Total number of Memory Access Instructions = 0 
+Total number of Control Transfer Instructions = 0 
+Total number of Instructions = 10 
+The last instruction had Opcode=3, Rs=5, Rt=4, Rd=0, Imm=-94 
+The instruction before last had Opcode=2, Rs=7, Rt=3, Rd=1, Imm=0 
+The instruction 2 before last had Opcode=3, Rs=3, Rt=4, Rd=0, Imm=54 
+The instruction 3 before last had Opcode=2, Rs=2, Rt=6, Rd=10, Imm=0 
+The instruction 4 before last had Opcode=3, Rs=5, Rt=4, Rd=0, Imm=99 
+General Purpose Registers 
+Register 0 = 0 
+General Purpose Registers 
+Register 1 = 2048 
+General Purpose Registers 
+Register 2 = 0 
+General Purpose Registers 
+Register 3 = -2048 
+General Purpose Registers 
+Register 4 = 100 
+General Purpose Registers 
+Register 5 = 6 
+General Purpose Registers 
+Register 6 = 0 
+General Purpose Registers 
+Register 7 = 0 
+General Purpose Registers 
+Register 8 = 0 
+General Purpose Registers 
+Register 9 = 0 
+General Purpose Registers 
+Register 10 = 0 
+General Purpose Registers 
+Register 11 = 0 
+General Purpose Registers 
+Register 12 = 0 
+General Purpose Registers 
+Register 13 = 0 
+General Purpose Registers 
+Register 14 = 0 
+General Purpose Registers 
+Register 15 = 0 
+General Purpose Registers 
+Register 16 = 0 
+General Purpose Registers 
+Register 17 = 0 
+General Purpose Registers 
+Register 18 = -6 
+General Purpose Registers 
+Register 19 = 0 
+General Purpose Registers 
+Register 20 = 0 
+General Purpose Registers 
+Register 21 = 0 
+General Purpose Registers 
+Register 22 = 0 
+General Purpose Registers 
+Register 23 = 0 
+General Purpose Registers 
+Register 24 = 0 
+General Purpose Registers 
+Register 25 = 0 
+General Purpose Registers 
+Register 26 = 0 
+General Purpose Registers 
+Register 27 = 0 
+General Purpose Registers 
+Register 28 = 0 
+General Purpose Registers 
+Register 29 = 0 
+General Purpose Registers 
+Register 30 = 0 

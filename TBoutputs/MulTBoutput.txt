@@ -1,0 +1,31 @@
+0001 0100 0110 0100 0000 0000 0000 1010  Opcode:  MULI | Rs = R3 | Rt = R4  | Imm = 10 
+0001 0000 1010 0100 0101 0000 0000 0000  Opcode:  MUL  | Rs = R5 | Rt = R4  | Rd = R10 
+0001 0100 1000 0101 1111 1111 1111 1010  Opcode:  MULI | Rs = R4 | Rt = R5  | Imm = -6 
+0001 0000 1110 0011 0000 0000 0000 0000  Opcode:  MUL  | Rs = R7 | Rt = R3  | Rd = R0 
+0001 0100 1000 0101 0000 0000 0000 1010  Opcode:  MULI | Rs = R4 | Rt = R5  | Imm = 10 
+0001 0000 1010 0100 1100 0000 0000 0000  Opcode:  MUL  | Rs = R5 | Rt = R4  | Rd = R24 
+0001 0100 0100 0110 1111 1111 1111 1101  Opcode:  MULI | Rs = R2 | Rt = R6  | Imm = -3 
+0001 0000 0110 0100 0000 0000 0011 0110  Opcode:  MUL  | Rs = R3 | Rt = R4  | Rd = R0 
+0001 0100 1110 0011 0000 1000 0000 0000  Opcode:  MULI | Rs = R7 | Rt = R3  | Imm = 2048 
+0001 0000 1010 0100 1111 1111 1010 0010  Opcode:  MUL  | Rs = R5 | Rt = R4  | Rd = R31 
+The program counter has a final value of 40 
+Total number of R-Type Instructions = 5 
+Total number of I-Type Instructions = 5 
+Total number of Arithmetic Instructions = 10 
+Total number of Logical Instructions = 0 
+Total number of Memory Access Instructions = 0 
+Total number of Control Transfer Instructions = 0 
+Total number of Instructions = 10 
+The last instruction had Opcode=4, Rs=5, Rt=4, Rd=31, Imm=0 
+The instruction before last had Opcode=5, Rs=7, Rt=3, Rd=0, Imm=2048 
+The instruction 2 before last had Opcode=4, Rs=3, Rt=4, Rd=0, Imm=0 
+The instruction 3 before last had Opcode=5, Rs=2, Rt=6, Rd=0, Imm=-3 
+The instruction 4 before last had Opcode=4, Rs=5, Rt=4, Rd=24, Imm=0 
+General Purpose Registers 
+Register 0 = 0 | 
+Register 1 = 0 | Register 2 = 0 | Register 3 = 0 | Register 4 = 0 | Register 5 = 0 | 
+Register 6 = 0 | Register 7 = 0 | Register 8 = 0 | Register 9 = 0 | Register 10 = 0 | 
+Register 11 = 0 | Register 12 = 0 | Register 13 = 0 | Register 14 = 0 | Register 15 = 0 | 
+Register 16 = 0 | Register 17 = 0 | Register 18 = 0 | Register 19 = 0 | Register 20 = 0 | 
+Register 21 = 0 | Register 22 = 0 | Register 23 = 0 | Register 24 = 0 | Register 25 = 0 | 
+Register 26 = 0 | Register 27 = 0 | Register 28 = 0 | Register 29 = 0 | Register 30 = 0 | 

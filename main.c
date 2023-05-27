@@ -77,7 +77,7 @@ int main() {
     }
     
 
-    fptr = fopen("imageSUBTB.txt", "r");
+    fptr = fopen("imageSubTB.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
@@ -407,12 +407,14 @@ void opSwitch(int decOp) {
             printf(" MUL  ");
             mystats.rtype++;
             mystats.arithmetic++;
+            GPReg[inst1.Rd] = (GPReg[inst1.Rs] * GPReg[inst1.Rt]); 
             break;
 
         case 5:
             printf(" MULI ");
             mystats.itype++;
             mystats.arithmetic++;
+            GPReg[inst1.Rt] = (GPReg[inst1.Rs] * inst1.Imm); 
             break;
     
         case 6:

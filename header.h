@@ -27,8 +27,7 @@ int extract_immediate(int bin_inst[]);
 int extract_type(int bin_inst[]);
 void print_program(int linect);
 const char *extract_opcode_str(int opcode);
-void parse(struct instruction an_instruction, int num[SIZ]);
-void initialize_program();
+void parse(struct instruction *an_instruction, int num[SIZ]);
 
 
 

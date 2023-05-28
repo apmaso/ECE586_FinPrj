@@ -1,6 +1,5 @@
 #include "header.h"
 
-
 int mem_img2bin(char myString[10], int num[SIZ]){
 	
 	int a = 0;
@@ -155,23 +154,25 @@ int mem_img2bin(char myString[10], int num[SIZ]){
 			num[d]=1;
 		}
 	}//close forloop
-	//prt32(num); //TODO: KEEP THIS HERE FOR FUTURE DEBUGGING.
+	prt32(num); //TODO: KEEP THIS HERE FOR FUTURE DEBUGGING.
 	return 0;
 }//close mem_img2bin function
 
 
-void parse(struct instruction an_instruction, int num[SIZ]){
+void parse(struct instruction *an_instruction, int num[SIZ]){
 
-	an_instruction.opcode=extract_opcode(num, OPLEN);
-	strcpy(an_instruction.opcode_name,extract_opcode_str(an_instruction.opcode));
-	an_instruction.rs=extract_rs(num);
-	an_instruction.rt=extract_rt(num);
-	an_instruction.rd=extract_rd(num);
-	an_instruction.imm=extract_immediate(num);
-	an_instruction.TYPE=extract_type(num);
-	an_instruction.ready=0;
+	an_instruction->opcode=extract_opcode(num, OPLEN);
+	//printf("opcode= %d\n", an_instruction.opcode);
+	strcpy(an_instruction->opcode_name,extract_opcode_str(an_instruction->opcode));
+	an_instruction->rs=extract_rs(num);
+	an_instruction->rt=extract_rt(num);
+	an_instruction->rd=extract_rd(num);
+	an_instruction->imm=extract_immediate(num);
+	an_instruction->TYPE=extract_type(num);
+	//printf("type is: %d\n", an_instruction.TYPE);
+	an_instruction->ready=0;
 }
-/*
+
 void prt32(int num[SIZ]){//TODO: THIS IS FOR DEBUGGING, mostly unused.
 
 	int count = 0;
@@ -185,8 +186,10 @@ void prt32(int num[SIZ]){//TODO: THIS IS FOR DEBUGGING, mostly unused.
 			count=0;
 		}
 	}
+
+		printf("\n");
 }
 
-*/
+
 
 

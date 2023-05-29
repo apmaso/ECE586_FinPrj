@@ -13,7 +13,7 @@ parse.o: parse.c header.h instruction.h
 	gcc -c -g -Wall parse.c
 
 clean:
-	rm*.o main
+	rm main parse.o main.o
 
 
 

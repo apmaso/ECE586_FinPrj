@@ -46,7 +46,6 @@ int main() {
 	char myString[10];
 	FILE *fptr;
 
-	char letter = 'Z';
 	int i_val = 99;
 
 	int num[SIZ];
@@ -72,12 +71,12 @@ int main() {
     mystats.totalInst = 0;
 
     // Initialize Reg array to 0
-    for (int a=0; a<31; a++) {
+    for (int a=0; a<32; a++) {
         GPReg[a] = 0;
     }
     
 
-    fptr = fopen("image.txt", "r");
+    fptr = fopen("imageFiles/image.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);

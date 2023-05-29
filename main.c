@@ -28,7 +28,7 @@ struct instruction inst4;
 struct instruction inst5;
 
 // Int array for general purpose registers
-int GPReg[31];
+int GPReg[32];
 
 int hex2bin(char myString[10], int num[SIZ]);
 int bin2dec(int array[], int len);
@@ -77,7 +77,7 @@ int main() {
     }
     
 
-    fptr = fopen("imageSubTB.txt", "r");
+    fptr = fopen("image.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
@@ -172,7 +172,7 @@ int main() {
     printf("The instruction 4 before last had Opcode=%d, Rs=%d, Rt=%d, Rd=%d, Imm=%d \n", inst5.opcode, inst5.Rs, inst5.Rt, inst5.Rd, inst5.Imm);
     
     printf("General Purpose Registers \n");
-    for (int b=0; b<31; b++) {
+    for (int b=0; b<32; b++) {
         printf("Register %d = %d | ", b, GPReg[b]);
     
         // print out five register values per line
@@ -421,36 +421,42 @@ void opSwitch(int decOp) {
             printf(" OR   ");
             mystats.rtype++;
             mystats.logical++;
+            GPReg[inst1.Rd] = (GPReg[inst1.Rs] | GPReg[inst1.Rt]); 
             break;
 
         case 7:
             printf(" ORI  ");
             mystats.itype++;
             mystats.logical++;
+            GPReg[inst1.Rt] = (GPReg[inst1.Rs] | inst1.Imm); 
             break;
     
         case 8:
             printf(" AND  ");
             mystats.rtype++;
             mystats.logical++;
+            GPReg[inst1.Rd] = (GPReg[inst1.Rs] & GPReg[inst1.Rt]); 
             break;
 
         case 9:
             printf(" ANDI ");
             mystats.itype++;
             mystats.logical++;
+            GPReg[inst1.Rt] = (GPReg[inst1.Rs] & inst1.Imm); 
             break;
 
         case 10:
             printf(" XOR  ");
             mystats.rtype++;
             mystats.logical++;
+            GPReg[inst1.Rd] = (GPReg[inst1.Rs] ^ GPReg[inst1.Rt]); 
             break;
 
         case 11:
             printf(" XORI ");
             mystats.itype++;
             mystats.logical++;
+            GPReg[inst1.Rt] = (GPReg[inst1.Rs] ^ inst1.Imm); 
             break;
     
         case 12:

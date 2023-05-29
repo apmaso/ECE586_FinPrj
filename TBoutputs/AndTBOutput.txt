@@ -1,0 +1,29 @@
+0000 0100 0000 0001 0000 0011 1110 1000  Opcode:  ADDI | Rs = R0 | Rt = R1  | Imm = 1000 
+0000 0100 0000 0010 0000 0100 1011 0000  Opcode:  ADDI | Rs = R0 | Rt = R2  | Imm = 1200 
+0010 0100 0010 0011 0000 0000 0000 0000  Opcode:  ANDI | Rs = R1 | Rt = R3  | Imm = 0 
+0010 0100 0100 0100 0000 0000 0000 0000  Opcode:  ANDI | Rs = R2 | Rt = R4  | Imm = 0 
+0010 0100 0010 0101 0111 1111 1111 1111  Opcode:  ANDI | Rs = R1 | Rt = R5  | Imm = 32767 
+0010 0100 0100 0110 0111 1111 1111 1111  Opcode:  ANDI | Rs = R2 | Rt = R6  | Imm = 32767 
+0010 0000 0100 0001 0011 1000 0000 0000  Opcode:  AND  | Rs = R2 | Rt = R1  | Rd = R7 
+The program counter has a final value of 28 
+Total number of R-Type Instructions = 1 
+Total number of I-Type Instructions = 6 
+Total number of Arithmetic Instructions = 2 
+Total number of Logical Instructions = 5 
+Total number of Memory Access Instructions = 0 
+Total number of Control Transfer Instructions = 0 
+Total number of Instructions = 7 
+The last instruction had Opcode=8, Rs=2, Rt=1, Rd=7, Imm=0 
+The instruction before last had Opcode=9, Rs=2, Rt=6, Rd=0, Imm=32767 
+The instruction 2 before last had Opcode=9, Rs=1, Rt=5, Rd=0, Imm=32767 
+The instruction 3 before last had Opcode=9, Rs=2, Rt=4, Rd=0, Imm=0 
+The instruction 4 before last had Opcode=9, Rs=1, Rt=3, Rd=0, Imm=0 
+General Purpose Registers 
+Register 0 = 0 | 
+Register 1 = 1000 | Register 2 = 1200 | Register 3 = 0 | Register 4 = 0 | Register 5 = 1000 | 
+Register 6 = 1200 | Register 7 = 160 | Register 8 = 0 | Register 9 = 0 | Register 10 = 0 | 
+Register 11 = 0 | Register 12 = 0 | Register 13 = 0 | Register 14 = 0 | Register 15 = 0 | 
+Register 16 = 0 | Register 17 = 0 | Register 18 = 0 | Register 19 = 0 | Register 20 = 0 | 
+Register 21 = 0 | Register 22 = 0 | Register 23 = 0 | Register 24 = 0 | Register 25 = 0 | 
+Register 26 = 0 | Register 27 = 0 | Register 28 = 0 | Register 29 = 0 | Register 30 = 0 | 
+Register 31 = 0 | 

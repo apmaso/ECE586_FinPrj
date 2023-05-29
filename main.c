@@ -76,7 +76,7 @@ int main() {
     }
     
 
-    fptr = fopen("imageFiles/image.txt", "r");
+    fptr = fopen("image25.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);

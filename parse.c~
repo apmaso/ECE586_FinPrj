@@ -185,7 +185,7 @@ void fill_mem(int data_seg[], int num[SIZ], int linect){
 	//prt32(num);//TODO:KEEP FOR DEBUGGING?
 	data_seg[linect]=extract_mem(num);	
 	
-	//printf("              data_seg is: %d\n", data_seg[linect]);//TODO:KEEP FOR DEBUGGING?
+	printf("              data_seg is: %d\n", data_seg[linect]);//TODO:KEEP FOR DEBUGGING?
 }
 
 void test_mem(int data_seg[], int datact){

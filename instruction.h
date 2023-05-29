@@ -10,6 +10,8 @@ struct instruction {
 
 	int TYPE;
 	int ready;
+
+	int execution_state;
 };
 
 

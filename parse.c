@@ -154,7 +154,7 @@ int mem_img2bin(char myString[10], int num[SIZ]){
 			num[d]=1;
 		}
 	}//close forloop
-	prt32(num); //TODO: KEEP THIS HERE FOR FUTURE DEBUGGING.
+	//prt32(num); //TODO: KEEP THIS HERE FOR FUTURE DEBUGGING.
 	return 0;
 }//close mem_img2bin function
 
@@ -173,6 +173,27 @@ void parse(struct instruction *an_instruction, int num[SIZ]){
 	an_instruction->ready=0;
 }
 
+void fill_mem(int data_seg[], int num[SIZ], int linect){
+	//printf("linect is: %d\n", linect);//TODO KEEP FOR DEBUGGING?
+	//printf("num is: \n");//TODO: KEEP FOR DEBUGGING?
+	//prt32(num);//TODO:KEEP FOR DEBUGGING?
+	data_seg[linect]=extract_mem(num);	
+	
+	//printf("data_seg is: %d\n", data_seg[linect]);//TODO:KEEP FOR DEBUGGING?
+}
+
+void test_mem(int data_seg[], int datact){
+	for(int i=0;i<datact;i++){
+		printf("%d=i;  data_seg is: %d\n", i, data_seg[i]);
+	}
+}
+
+int get_mem(int data_seg[], int value){
+	int line=value*4;
+	printf("line is: %d\n", line);
+
+	return line;
+}
 void prt32(int num[SIZ]){//TODO: THIS IS FOR DEBUGGING, mostly unused.
 
 	int count = 0;

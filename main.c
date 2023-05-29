@@ -9,6 +9,7 @@ struct statistics {
 struct statistics mystats;
 
 struct instruction program[3000]; //TODO FIXME
+int data_seg[1000];
 
 void shift(int opcode, int Rs, int Rt, int Rd, int Imm); 
 
@@ -17,22 +18,33 @@ int main() {
 	FILE *fptr;
 	int num[SIZ];
 
-	int linect = 0;
+	int linect = 0;//maintain a count of the lines as we step through the file.
+	int progstop = 0;//this is the last line of the program portion of the file. 
 	//initialize_program();
 	fptr = fopen("image.txt", "r");
 
 	//FIXME line83, pass the name of the file as a variable. i.e. arg1.
 	while(fgets(myString, 10, fptr)){
-		mem_img2bin(myString, num);
-		//prt32(num);
+		mem_img2bin(myString, num);//converts hex to bin, saves in num.
+		//prt32(num);//prints all 32 bits of the binary number (TODO for testing)
 		parse(&program[linect++], num);
 		if(program[linect-1].opcode==17){//this is a halt instruction
 						 //continue filling the memory, stop filling the program.	
+			progstop=linect;
 			break;	
 		}
 	}
-	print_program(linect);
+	while(fgets(myString, 10, fptr)){
+		
+		mem_img2bin(myString, num);
+		fill_mem(data_seg, num, linect++);
+	
 
+	}
+	print_program(progstop);
+	
+	//test_mem(data_seg, linect);
+	//printf("linect is: %d\n", linect);
 	fclose(fptr);
 
 	exit(EXIT_SUCCESS);
@@ -84,6 +96,17 @@ int extract_opcode(int bin_inst[], int opLen){
 
 	decOp = bin2dec(opcode, opLen);
 	return decOp;
+}
+
+int extract_mem(int bin_inst[]){
+	int mem[32];
+	int dec_mem=0;
+
+	for(int i=0;i<32;i++){
+		mem[i]=bin_inst[(i)];
+	}
+	dec_mem=bin2dec(mem, 32);
+	return dec_mem;
 }
 
 const char* extract_opcode_str(int opcode){
@@ -200,7 +223,7 @@ int extract_immediate(int bin_inst[]){
 }
 
 void print_program(int linect){
-	printf("linecount is %d\n", linect);
+	//printf("linecount is %d\n", linect);
 	for(int i=0;i<linect;i++){
 		if(program[i].TYPE==0)
 			printf("%s R%d, R%d R%d \n", program[i].opcode_name, program[i].rs, program[i].rt, program[i].rd);

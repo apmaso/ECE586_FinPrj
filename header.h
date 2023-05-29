@@ -25,9 +25,11 @@ int extract_rt(int bin_inst[]);
 int extract_rd(int bin_inst[]);
 int extract_immediate(int bin_inst[]);
 int extract_type(int bin_inst[]);
+int extract_mem(int bin_inst[]);
 void print_program(int linect);
 const char *extract_opcode_str(int opcode);
 void parse(struct instruction *an_instruction, int num[SIZ]);
-
+void fill_mem(int data_seg[], int num[SIZ], int datact);
+void test_mem(int data_seg[], int linect);
 
 

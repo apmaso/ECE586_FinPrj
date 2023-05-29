@@ -173,6 +173,22 @@ void parse(struct instruction *an_instruction, int num[SIZ]){
 	an_instruction->ready=0;
 }
 
+void fill_mem(int data_seg[], int num[SIZ], int linect){
+	//printf("linect is: %d\n", linect);//TODO KEEP FOR DEBUGGING?
+	//printf("num is: \n");//TODO: KEEP FOR DEBUGGING?
+	//prt32(num);//TODO:KEEP FOR DEBUGGING?
+	data_seg[linect]=extract_mem(num);	
+	
+	//printf("data_seg is: %d\n", data_seg[linect]);//TODO:KEEP FOR DEBUGGING?
+}
+
+void test_mem(int data_seg[], int datact){
+	for(int i=0;i<datact;i++){
+		printf("%d=i;  data_seg is: %d\n", i, data_seg[i]);
+	}
+}
+
+
 void prt32(int num[SIZ]){//TODO: THIS IS FOR DEBUGGING, mostly unused.
 
 	int count = 0;

@@ -7,8 +7,10 @@ struct statistics {
 
 struct statistics mystats;
 
-struct instruction program[3000]; //TODO FIXME
+struct instruction program[3000]; 
+struct instruction pipeline[5];
 int data_seg[1000];
+int gpReg[32];
 
 void shift(int opcode, int Rs, int Rt, int Rd, int Imm); 
 
@@ -19,8 +21,9 @@ int main() {
 
 	int linect = 0;//maintain a count of the lines as we step through the file.
 	int progstop = 0;//this is the last line of the program portion of the file. 
-	
-	fptr = fopen("image.txt", "r");
+	initialize_reg(gpReg);
+
+	fptr = fopen("imageAddTB.txt", "r");
 
 	//FIXME line83, pass the name of the file as a variable. i.e. arg1.
 	while(fgets(myString, 10, fptr)){
@@ -45,6 +48,15 @@ int main() {
 	//test_mem(data_seg, linect);
 	//printf("linect is: %d\n", linect);
 	fclose(fptr);
+	
+	//testing/proving:
+	print_reg(gpReg);
+	for(int i=0;i<linect;i++){
+		process_code(&program[i], gpReg);
+	}
+	print_reg(gpReg);
+	
+
 
 	exit(EXIT_SUCCESS);
 }//end of main function.
@@ -244,7 +256,6 @@ struct instruction fill_instruction(int bin_inst[], int len){
 	my_instruct.ready = 0;
 	return my_instruct;
 }
-
 
 
 

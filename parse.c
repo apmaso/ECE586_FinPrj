@@ -218,5 +218,55 @@ void prt32(int num[SIZ]){//TODO: THIS IS FOR DEBUGGING, mostly unused.
 }
 
 
+int process_code(struct instruction *an_instruction, int gpReg[])
+{
+	int result=0;
+
+	if(an_instruction->opcode==0){
+		result = ADD(gpReg[an_instruction->rs], gpReg[an_instruction->rt]);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==1){
+		//printf("rs is: %d\n imm is: %d\n", an_instruction->rs, an_instruction->imm);
+		result=ADDI(gpReg[an_instruction->rs], an_instruction->imm);
+		//printf("result is: %d\n", result);
+
+		gpReg[an_instruction->rt]=result;
+		return 0;
+	}
+
+	gpReg[an_instruction->rd]=result;
+	return 0;
+}
+
+int ADD(int rs, int rt){
+	return rs+rt;
+}	
+
+int ADDI(int rs, int imm){
+	int num=rs+imm;
+	//printf("num is %d\n", num);
+	return num;
+}
+//TODO HERE IS WHERE WE NEED TO DO SOME MORE OF THESE FUNCTIONS.
+//for and = single &
+//for or = singl |
+//for xor = sincle ^
+
+void initialize_reg(int gpReg[32]){
+
+	for(int i=0;i<SIZ;i++){
+		gpReg[i]=0;
+	}
+}
+
+
+void print_reg(int gpReg[]){
+	for(int i=0;i<SIZ;i++){
+		printf("GPREG[%d] is: %d\n", i, gpReg[i]);
+	}
+}
+
+
 
 

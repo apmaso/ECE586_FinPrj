@@ -76,7 +76,7 @@ int main() {
     }
     
 
-    fptr = fopen("image25.txt", "r");
+    fptr = fopen("imageFiles/imageAddTB.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
@@ -197,80 +197,29 @@ int parse(char myString[10], int num[SIZ]){
 
 	for(int i=0;i<8;++i){
 		//printf("i is: %d\n", i);
-		if(i==0){
-			a=0;
-			b=1;
-			c=2;
-			d=3;
-		}
-		if(i==1){
-			a=4;
-			b=5;
-			c=6;
-			d=7;
-		}
-		if(i==2){
-			a=8;
-			b=9;
-			c=10;
-			d=11;
-		}
-		if(i==3){
-			a=12;
-			b=13;
-			c=14;
-			d=15;
-		}
-		if(i==4){
-			a=16;
-			b=17;
-			c=18;
-			d=19;
-		}
-		if(i==5){
-			a=20;
-			b=21;
-			c=22;
-			d=23;
-		}
-		if(i==6){
-			a=24;
-			b=25;
-			c=26;
-			d=27;
-		}
-		if(i==7){
-			a=28;
-			b=29;
-			c=30;
-			d=31;
-		}
-
-		//printf("mystring[i] is: %c, %d\n", myString[i], i);
-		//printf("mystring is: %s\n", myString);
+			a=(4*i);
+			b=(4*i + 1);
+			c=(4*i + 2);
+			d=(4*i + 3);
 
 		if(myString[i]=='0'){
-			//printf("mystring[i] is: %c\n", myString[i]);
 			num[a]=0;
 			num[b]=0;
 			num[c]=0;
 			num[d]=0;
 		}
 		if(myString[i]=='1'){
-			//printf("mystring[i] is: %c\n", myString[i]);
 			num[a]=0;
 			num[b]=0;
 			num[c]=0;
 			num[d]=1;
 		}
 		if(myString[i]=='2'){
-			num[a]=0;
 			num[b]=0;
 			num[c]=1;
 			num[d]=0;
 		}
 		if(myString[i]=='3'){
-			num[a]=0;
 			num[b]=0;
 			num[c]=1;
 			num[d]=1;

@@ -9,8 +9,13 @@ struct statistics mystats;
 
 struct instruction program[3000]; 
 struct instruction pipeline[5];
+
+//data segment:
 int data_seg[1000];
+int data_red[1000];
+//registers:
 int gpReg[32];
+int reg_ready[32];
 
 void shift(int opcode, int Rs, int Rt, int Rd, int Imm); 
 
@@ -23,8 +28,8 @@ int main() {
 	int progstop = 0;//this is the last line of the program portion of the file. 
 	initialize_reg(gpReg);
 
-	fptr = fopen("imageAddTB.txt", "r");
-
+	fptr = fopen("image.txt", "r");
+		//imageAddTB.txt
 	//FIXME line83, pass the name of the file as a variable. i.e. arg1.
 	while(fgets(myString, 10, fptr)){
 		mem_img2bin(myString, num);//converts hex to bin, saves in num.
@@ -51,12 +56,20 @@ int main() {
 	
 	//testing/proving:
 	print_reg(gpReg);
-	for(int i=0;i<linect;i++){
-		process_code(&program[i], gpReg);
-	}
-	print_reg(gpReg);
-	
 
+	for(int i=0;i<linect;i++){
+		for(int j=0;j<5;j++){
+			assignment(&program[i], &pipeline[j]);
+			display_struct(&pipeline[j]);
+		}			
+		//process_code(&program[i], gpReg);
+	}
+	//print_reg(gpReg);//prints the list of registers.
+/*
+	for(int i=0;i<5;i++){
+		display_struct(&pipeline[i]);
+	}
+*/
 
 	exit(EXIT_SUCCESS);
 }//end of main function.
@@ -256,7 +269,6 @@ struct instruction fill_instruction(int bin_inst[], int len){
 	my_instruct.ready = 0;
 	return my_instruct;
 }
-
 
 
 

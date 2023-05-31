@@ -37,3 +37,8 @@ int process_code(struct instruction *an_instruction, int gpReg[]);
 int ADD(int rs, int rt);
 int ADDI(int rs, int imm);
 void print_reg(int gpReg[]);
+
+
+void assignment(struct instruction *an_instruction, struct instruction *other_instruction);
+
+void display_struct(struct instruction *an_instruction);

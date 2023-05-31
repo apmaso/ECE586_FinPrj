@@ -267,6 +267,43 @@ void print_reg(int gpReg[]){
 	}
 }
 
+//function that assigns value of one struct to another.
+void assignment(struct instruction *an_instruction, struct instruction *other_instruction){
+	
+	other_instruction->opcode=an_instruction->opcode;
+	for(int i=0;i<5;i++){
+		other_instruction->opcode_name[i]=an_instruction->opcode_name[i];
+	}
+	/*
+	for(int i=0;i<5;i++){
+		printf("%c",other_instruction->opcode_name[i]);
+	}
+	printf("\n");
+	*/
+	
+	other_instruction->rs=an_instruction->rs;
+	other_instruction->rt=an_instruction->rt;
+	other_instruction->rd=an_instruction->rd;
+	other_instruction->imm=an_instruction->imm;
 
+	other_instruction->TYPE=an_instruction->TYPE;
+	other_instruction->ready=an_instruction->ready;
+	
+	other_instruction->execution_state=an_instruction->execution_state;
 
+}
 
+void display_struct(struct instruction *an_instruction){
+	printf("opcode is: %d\n", an_instruction->opcode);
+	printf("opcode name is:");
+	for(int i=0;i<5;i++){
+		printf("%c",an_instruction->opcode_name[i]);
+	}
+	printf("\n");
+	printf("rs is: %d\n", an_instruction->rs);
+	printf("rt is: %d\n", an_instruction->rt);
+	printf("rs is: %d\n", an_instruction->rs);
+	printf("type is %d\n", an_instruction->TYPE);
+	printf("ready is: %d\n", an_instruction->ready);
+
+	}//close display function.

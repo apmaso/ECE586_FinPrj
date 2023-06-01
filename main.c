@@ -10,6 +10,9 @@ struct statistics mystats;
 struct instruction program[3000]; 
 struct instruction pipeline[5];
 
+//program counter:
+int pc=0;
+
 //data segment:
 int data_seg[1000];
 int data_red[1000];
@@ -17,6 +20,9 @@ int data_red[1000];
 int gpReg[32];
 int reg_ready[32];
 
+int pipeline_head;  //head->always points to the function that's in the status of fetch; NEEDS to be initialized to zero.
+int pipeline_tail;  //tail->always points to the function that's in the status of write_back;  NEEDS to be initialized to zero.
+int cycle;
 void shift(int opcode, int Rs, int Rt, int Rd, int Imm); 
 
 int main() {
@@ -31,6 +37,10 @@ int main() {
 	fptr = fopen("image.txt", "r");
 		//imageAddTB.txt
 	//FIXME line83, pass the name of the file as a variable. i.e. arg1.
+	//FIXME PUT This loop into a function, fillprogram
+	
+	progstop = process_program(myString, fptr, linect, progstop, num, &program);
+	/*
 	while(fgets(myString, 10, fptr)){
 		mem_img2bin(myString, num);//converts hex to bin, saves in num.
 		//prt32(num);//prints all 32 bits of the binary number (TODO for testing)
@@ -41,12 +51,12 @@ int main() {
 			break;	
 		}
 	}
+	*/
+	//FIXME:put this into a function called fill_data_in_memory.
 	while(fgets(myString, 10, fptr)){
 		
 		mem_img2bin(myString, num);
 		fill_mem(data_seg, num, linect++);
-	
-
 	}
 	print_program(progstop);
 	
@@ -57,8 +67,26 @@ int main() {
 	//testing/proving:
 	print_reg(gpReg);
 
+	for(;;){
+		
+		cycle++;
+		//fetch an instruction from the program array, unless there's a stall.
+		fetch_instruction();
+		//decode an instruction from the program array, unless there is a stall.
+		//moving it from fetch stage to decode stage. 
+		decode_instruction();
+		//execute's the program.
+		execute_instruction();
+		//mem-access, if load or store, there is a memory operation. otherwise just move it forward, probably. 
+		memory_access();
+		//write_back: just move it to write back stage from memory.
+		write_back();
+		//
+		pc++;//increment program counter by one.  (need to adjust to four later).	
+	}
 	for(int i=0;i<progstop;i++){
 		for(int j=0;j<5;j++){
+			//change the name of this function assignment->to something else.
 			assignment(&program[i], &pipeline[j]);
 			display_struct(&pipeline[j]);
 		}			

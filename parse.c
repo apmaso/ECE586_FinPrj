@@ -1,5 +1,29 @@
 #include "header.h"
 
+
+extern struct instruction program[3000]; 
+
+int process_program(char myString[], FILE *fptr, int linect, int progstop,int num[], struct instruction *an_instruction[]){
+//TODO:Need to test this function, only compiles, has not been tested.
+	while(fgets(myString, 10, fptr)){
+		mem_img2bin(myString, num);//converts hex to bin, saves in num.
+		//prt32(num);//prints all 32 bits of the binary number (TODO for testing)
+		parse(&program[linect++], num);
+		if(program[linect-1].opcode==17){//this is a halt instruction
+						 //continue filling the memory, stop filling the program.	
+			progstop=linect;
+			return progstop;
+			//break;	
+		}
+	}
+		return progstop;
+}
+
+
+
+
+
+
 int mem_img2bin(char myString[10], int num[SIZ]){
 	
 	int a = 0;
@@ -268,6 +292,7 @@ void print_reg(int gpReg[]){
 }
 
 //function that assigns value of one struct to another.
+////TODO rename this function to have a better name.
 void assignment(struct instruction *an_instruction, struct instruction *other_instruction){
 	
 	other_instruction->opcode=an_instruction->opcode;
@@ -290,7 +315,7 @@ void assignment(struct instruction *an_instruction, struct instruction *other_in
 	other_instruction->ready=an_instruction->ready;
 	
 	other_instruction->execution_state=an_instruction->execution_state;
-
+	//when doing this function, need to maintain the number of items in the array.  
 }
 
 void display_struct(struct instruction *an_instruction){
@@ -307,3 +332,41 @@ void display_struct(struct instruction *an_instruction){
 	printf("ready is: %d\n", an_instruction->ready);
 
 	}//close display function.
+	 //
+
+
+void fetch_instruction(int pc ){
+	
+	//copy the program[pc] to pipeline_array;
+	//
+	pc++;
+	//pipeline head should point to the index.
+	//also need a way to maintain the pipeline array.
+}
+
+
+
+void decode_instruction() {
+
+	printf(".\n");
+}
+
+
+void execute_instruction(){
+
+
+	printf(".\n");
+}
+
+
+
+void memory_access(){
+
+
+	printf(".\n");
+}	
+
+void write_back(){
+
+	printf(".\n");
+}

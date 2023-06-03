@@ -39,7 +39,7 @@ int main() {
 	int progstop = 0;//this is the last line of the program portion of the file. 
 	initialize_reg(gpReg);
 
-	fptr = fopen("TEST2.txt", "r");
+	fptr = fopen("Test3.txt", "r");
 	//imageAddTB.txt
 	//FIXME line83, pass the name of the file as a variable. i.e. arg1.
 	//FIXME PUT This loop into a function, fillprogram
@@ -252,7 +252,7 @@ int extract_rt(int bin_inst[]){
 	int rt[5];
 	int dec_rt = 0;
 
-	for (int i=11, j=0; i<16;i+){
+	for (int i=11, j=0; i<16;i++){
 		rt[j++]=bin_inst[(i)];
 	}
 
@@ -389,21 +389,21 @@ void decode_instruction() {
 }
 
 void execute_instruction(){
+		
 		//execute the actual code...
-		printf("#########reg_ready[1] is %d\n", reg_ready[1]);
 		int decoded_inst_index=stagebusy(1);
 		if(stagebusy(2)==-1 && decoded_inst_index != -1){
 
-				//printf("inside decode's IF\nfetched_inst_index is: %d\n", fetched_inst_index);
 				if(program[decoded_inst_index].TYPE==0) {
 
 					if(cycle>reg_ready[pipeline[decoded_inst_index].rs] && cycle>reg_ready[pipeline[decoded_inst_index].rt]){
 
-						printf("rt $$$$$$$$$$$$$$$$$$$$$$$$$$ %d\n",reg_ready[pipeline[decoded_inst_index].rt]);
-						//FIXME: check potential bug if execution has a stall.  so ready will bew more plan 2 cycles later.	
 						pipeline[decoded_inst_index].pipe_stage=2;
 						reg_ready[pipeline[decoded_inst_index].rd]=cycle+2;
-						printf("rt @@@@@@@@@@@@@@@@@@@@@@@@@@@@ %d\n",reg_ready[pipeline[decoded_inst_index].rt]);
+						
+						printf("execute inst.");
+						display_struct(&pipeline[decoded_inst_index]);
+
 					}		
 					else printf("STALL:execute inst. \n");
 				}
@@ -411,23 +411,24 @@ void execute_instruction(){
 				if(program[decoded_inst_index].TYPE==1) {
 
 					if(cycle>reg_ready[pipeline[decoded_inst_index].rs]) {
-						printf("$$$$$$$$$$$$$$$$$$$$$$$$$$ %d\n",reg_ready[pipeline[decoded_inst_index].rs]);
 						pipeline[decoded_inst_index].pipe_stage=2;//update execution stage of instruction in pipe.
 						reg_ready[pipeline[decoded_inst_index].rt]=cycle+2;
+						
+						printf("execute inst.");
+						display_struct(&pipeline[decoded_inst_index]);
+
 					}
 					else printf("STALL:execute inst. \n");
 				}
 			
-			printf("execute inst.");
-			display_struct(&pipeline[decoded_inst_index]);
 		}
 		
 
 		//printf("#########reg_ready[1] is %d\n", reg_ready[1]);
 		//printf("#########reg_ready[10] is %d\n", reg_ready[10]);
-		for(int i=0;i<32;i++){
-			printf("^^^^reg_ready[%d] is %d\n", i, reg_ready[i]);
-		}
+		//for(int i=0;i<32;i++){
+		//	printf("^^^^reg_ready[%d] is %d\n", i, reg_ready[i]);
+		//}
 		printf("exiting execute.\n");
 	}//closes execute 
 

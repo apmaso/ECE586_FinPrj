@@ -10,9 +10,11 @@
 #define OPLEN 6
 #define REGLEN 5
 #define IMMLEN 16 
+#define TRUE 1
+#define FALSE 0
 
 
-
+void initialize_array(struct instruction *an_instruction[]);
 int process_program(char myString[], FILE *fptr, int linect, int progstop,int num[], struct instruction *an_instruction[]);
 void print_inst(struct instruction);
 struct instruction fill_instruction(int bin_inst[], int len);
@@ -42,16 +44,19 @@ int ADDI(int rs, int imm);
 void print_reg(int gpReg[]);
 
 
-void assignment(struct instruction *an_instruction, struct instruction *other_instruction);
+void copy_to_pipe(struct instruction *an_instruction, struct instruction *other_instruction);
 void display_struct(struct instruction *an_instruction);
 
-
-void fetch(int pc );
+void fetch_instruction(int *pc);
 void decode_instruction();
 void execute_instruction();
 void memory_access();
 void write_back();
 
 
+int stagebusy(int execution_stage);
+void cleanup_pipe();
 
+int check_for_halt();
+void initialize_pipe();
 

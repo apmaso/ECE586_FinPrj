@@ -1,25 +1,7 @@
 #include "header.h"
 
 
-extern struct instruction program[3000]; 
-
-int process_program(char myString[], FILE *fptr, int linect, int progstop,int num[], struct instruction *an_instruction[]){
-
-	while(fgets(myString, 10, fptr)){
-		mem_img2bin(myString, num);//converts hex to bin, saves in num.
-		//prt32(num);//prints all 32 bits of the binary number (TODO for testing)
-		parse(&program[linect++], num);
-		if(program[linect-1].opcode==17){//this is a halt instruction
-						 //continue filling the memory, stop filling the program.	
-			progstop=linect;
-			return progstop;
-			//break;	
-		}
-	}
-		return progstop;
-}
-
-
+//extern struct instruction program[3000]; 
 
 
 
@@ -186,19 +168,19 @@ int mem_img2bin(char myString[10], int num[SIZ]){
 void parse(struct instruction *an_instruction, int num[SIZ]){
 
 	an_instruction->opcode=extract_opcode(num, OPLEN);
-	printf("opcode= %d\n", an_instruction->opcode);
+	//printf("opcode= %d\n", an_instruction->opcode);
 	strcpy(an_instruction->opcode_name,extract_opcode_str(an_instruction->opcode));
 	
 	an_instruction->rs=extract_rs(num);
-	printf("RS is: %d\n", an_instruction->rs);
+	//printf("RS is: %d\n", an_instruction->rs);
 	an_instruction->rt=extract_rt(num);
-	printf("rt is: %d\n", an_instruction->rt);
+	//printf("rt is: %d\n", an_instruction->rt);
 	an_instruction->rd=extract_rd(num);
-	printf("rd is: %d\n", an_instruction->rd);
+	//printf("rd is: %d\n", an_instruction->rd);
 	an_instruction->imm=extract_immediate(num);
-	printf("imm is: %d\n", an_instruction->imm);
+	//printf("imm is: %d\n", an_instruction->imm);
 	an_instruction->TYPE=extract_type(num);
-	printf("type is %d\n", an_instruction->TYPE);
+	//printf("type is %d\n", an_instruction->TYPE);
 	//printf("type is: %d\n", an_instruction.TYPE);
 	an_instruction->ready=0;
 }
@@ -247,19 +229,31 @@ int process_code(struct instruction *an_instruction, int gpReg[])
 	int result=0;
 
 	if(an_instruction->opcode==0){
+		printf("rs is: %d\n rt is: %d\n", an_instruction->rs, an_instruction->rt);
 		result = ADD(gpReg[an_instruction->rs], gpReg[an_instruction->rt]);
+		printf("result is: %d\n", result);
 		gpReg[an_instruction->rd]=result;
 	}
 	if(an_instruction->opcode==1){
-		//printf("rs is: %d\n imm is: %d\n", an_instruction->rs, an_instruction->imm);
+		printf("rs is: %d\n imm is: %d\n", an_instruction->rs, an_instruction->imm);
 		result=ADDI(gpReg[an_instruction->rs], an_instruction->imm);
-		//printf("result is: %d\n", result);
+		printf("result is: %d\n", result);
 
 		gpReg[an_instruction->rt]=result;
 		return 0;
 	}
 
-	gpReg[an_instruction->rd]=result;
+	if(an_instruction->opcode==2){
+		result=SUB(gpReg[an_instruction->rs], gpReg[an_instruction->rt]);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==3){
+		result=SUBI(gpReg[an_instruction->rs], an_instruction->imm);
+		gpReg[an_instruction->rd]=result;
+	}
+
+
+	//gpReg[an_instruction->rd]=result;
 	return 0;
 }
 
@@ -268,10 +262,61 @@ int ADD(int rs, int rt){
 }	
 
 int ADDI(int rs, int imm){
-	int num=rs+imm;
+	int rt=rs+imm;
 	//printf("num is %d\n", num);
-	return num;
+	return rt;
 }
+
+int SUB(int rs, int rt){
+	return rs-rt;
+}
+
+int SUBI(int rs, int imm){
+	int rt=rs+imm;
+	return rt;
+}
+
+int MUL(int rs, int rt){
+	return rs*rt;
+}
+
+int MULI(int rs, int imm){
+	int rt=rs*imm;
+	return rt;
+}
+
+int OR(int rs, int rt){
+	return rs|rt;
+}
+
+int ORI(int rs, int imm){
+	int rt=rs|imm;
+	return rt;
+}
+
+int AND(int rs, int rt){
+	return rs&rt;
+}
+
+int ANDI(int rs, int imm){
+	int rt=rs&imm;
+	return rt;
+}
+
+int XOR(int rs, int rt){
+	return rs^rt;
+}
+
+int XORI(int rs, int imm){
+	int rt=rs^imm;
+	return rt;
+}
+
+
+
+
+
+
 //TODO HERE IS WHERE WE NEED TO DO SOME MORE OF THESE FUNCTIONS.
 //for and = single &
 //for or = singl |
@@ -293,7 +338,7 @@ void print_reg(int gpReg[]){
 
 //function that assigns value of one struct to another.
 ////TODO rename this function to have a better name.
-void assignment(struct instruction *an_instruction, struct instruction *other_instruction){
+void copy_to_pipe(struct instruction *an_instruction, struct instruction *other_instruction){
 	
 	other_instruction->opcode=an_instruction->opcode;
 	for(int i=0;i<5;i++){
@@ -314,59 +359,46 @@ void assignment(struct instruction *an_instruction, struct instruction *other_in
 	other_instruction->TYPE=an_instruction->TYPE;
 	other_instruction->ready=an_instruction->ready;
 	
-	other_instruction->execution_state=an_instruction->execution_state;
+	other_instruction->pipe_stage=an_instruction->pipe_stage;
 	//when doing this function, need to maintain the number of items in the array.  
 }
 
 void display_struct(struct instruction *an_instruction){
-	printf("opcode is: %d\n", an_instruction->opcode);
+	if(an_instruction->TYPE==0){
+	printf("opcode is: %d     ", an_instruction->opcode);
 	printf("opcode name is:");
-	for(int i=0;i<5;i++){
-		printf("%c",an_instruction->opcode_name[i]);
-	}
-	printf("\n");
-	printf("rs is: %d\n", an_instruction->rs);
-	printf("rt is: %d\n", an_instruction->rt);
-	printf("rs is: %d\n", an_instruction->rs);
-	printf("type is %d\n", an_instruction->TYPE);
-	printf("ready is: %d\n", an_instruction->ready);
+	//for(int i=0;i<5;i++){
+		//printf("%c",an_instruction->opcode_name[i]);
 
+		printf("%s",an_instruction->opcode_name);
+	//}
+	printf("     ");
+	printf("rd is: %d     ", an_instruction->rd);
+	printf("rs is: %d     ", an_instruction->rs);
+	printf("rt is: %d     ", an_instruction->rt);
+	printf("type is %d     ", an_instruction->TYPE);
+	printf("ready is: %d   ", an_instruction->ready);
+
+	printf("pipestage is: %d\n", an_instruction->pipe_stage);
+	}
+
+	if(an_instruction->TYPE==1){
+	printf("opcode is: %d     ", an_instruction->opcode);
+	printf("opcode name is:");
+	//for(int i=0;i<5;i++){
+		printf("%s",an_instruction->opcode_name);
+	//}
+	printf("     ");
+	printf("rt is: %d     ", an_instruction->rt);
+	printf("rs is: %d     ", an_instruction->rs);
+	printf("imm is: %d     ", an_instruction->imm);
+	printf("type is %d     ", an_instruction->TYPE);
+	printf("ready is: %d   ", an_instruction->ready);
+
+	printf("pipestage is: %d\n", an_instruction->pipe_stage);
+
+	}
+	
 	}//close display function.
 	 //
 
-
-void fetch_instruction(int pc ){
-	
-	//copy the program[pc] to pipeline_array;
-	//
-	pc++;
-	//pipeline head should point to the index.
-	//also need a way to maintain the pipeline array.
-}
-
-
-
-void decode_instruction() {
-
-	printf(".\n");
-}
-
-
-void execute_instruction(){
-
-
-	printf(".\n");
-}
-
-
-
-void memory_access(){
-
-
-	printf(".\n");
-}	
-
-void write_back(){
-
-	printf(".\n");
-}

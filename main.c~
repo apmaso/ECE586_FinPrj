@@ -39,25 +39,12 @@ int main() {
 	int progstop = 0;//this is the last line of the program portion of the file. 
 	initialize_reg(gpReg);
 
-	fptr = fopen("Test3.txt", "r");
+	fptr = fopen("TEST2.txt", "r");
 	//imageAddTB.txt
 	//FIXME line83, pass the name of the file as a variable. i.e. arg1.
 	//FIXME PUT This loop into a function, fillprogram
 
 	progstop = process_program(myString, fptr, linect, progstop, num, &program);
-	/*
-	   while(fgets(myString, 10, fptr)){
-	   mem_img2bin(myString, num);//converts hex to bin, saves in num.
-				      //prt32(num);//prints all 32 bits of the binary number (TODO for testing)
-				      parse(&program[linect++], num);
-				      if(program[linect-1].opcode==17){//this is a halt instruction
-								       //continue filling the memory, stop filling the program.	
-								       progstop=linect;
-								       break;	
-								       }
-								       }
-								       */
-	//FIXME:put this into a function called fill_data_in_memory.
 	while(fgets(myString, 10, fptr)){
 
 		mem_img2bin(myString, num);
@@ -381,6 +368,20 @@ void decode_instruction() {
 	
 		//FIXME: on Branch a stall might happen
 		pipeline[fetched_inst_index].pipe_stage=1;
+
+		if(pipeline[fetched_inst_index].opcode==12 && cycle>reg_ready[pipeline[fetched_inst_index].rs]; /*&& no store with same address is pending*/ ){//type 1.
+					
+			reg_ready[pipeline[fetched_inst_index].rt]=cycle+2;
+
+			pipeline[fetched_inst_index].pipe_stage=1;
+		}
+		else if(pipeline[fetched_inst_index].opcode==13){
+				
+			int effective_address=gpReg[pipeline[fetched_inst_index].rs]+pipeline[fetched_inst_index].imm;
+			//FIXME address conflicts need to be resolved.
+			data_red[effective_address]=reg_ready[pipeline[fetched_inst_index].rs]+2;
+		}
+
 		printf("\nDecoding inst.");
 		display_struct(&pipeline[fetched_inst_index]);
 	}
@@ -394,7 +395,7 @@ void execute_instruction(){
 		int decoded_inst_index=stagebusy(1);
 		if(stagebusy(2)==-1 && decoded_inst_index != -1){
 
-				if(program[decoded_inst_index].TYPE==0) {
+				if(pipeline[decoded_inst_index].TYPE==0) {
 
 					if(cycle>reg_ready[pipeline[decoded_inst_index].rs] && cycle>reg_ready[pipeline[decoded_inst_index].rt]){
 
@@ -408,7 +409,7 @@ void execute_instruction(){
 					else printf("STALL:execute inst. \n");
 				}
 
-				if(program[decoded_inst_index].TYPE==1) {
+				if(pipeline[decoded_inst_index].TYPE==1) {
 
 					if(cycle>reg_ready[pipeline[decoded_inst_index].rs]) {
 						pipeline[decoded_inst_index].pipe_stage=2;//update execution stage of instruction in pipe.
@@ -420,15 +421,11 @@ void execute_instruction(){
 					}
 					else printf("STALL:execute inst. \n");
 				}
-			
+		
+		//print_reg(reg_ready);//register print - for debugging.
+
 		}
 		
-
-		//printf("#########reg_ready[1] is %d\n", reg_ready[1]);
-		//printf("#########reg_ready[10] is %d\n", reg_ready[10]);
-		//for(int i=0;i<32;i++){
-		//	printf("^^^^reg_ready[%d] is %d\n", i, reg_ready[i]);
-		//}
 		printf("exiting execute.\n");
 	}//closes execute 
 
@@ -440,7 +437,18 @@ void memory_access(){
 	if(stagebusy(3) == -1 && executed_inst_index != -1){
 
 		pipeline[executed_inst_index].pipe_stage=3;
-
+			if(pipeline[executed_inst_index].opcode==12 /*&& no store with same address is pending*/ ){//type 1.
+					
+				reg_ready[pipeline[executed_inst_index].rt]=cycle+2;
+			}
+			else if(pipeline[executed_inst_index].opcode==13){
+				
+//int gpReg[32];
+				int effective_address=gpReg[pipeline[executed_inst_index].rs]+pipeline[executed_inst_index].imm;
+				//FIXME address conflicts need to be resolved.
+				data_red[effective_address]=reg_ready[pipeline[executed_inst_index].rs]+2;
+//int data_red[1000];
+			}
 			//execution will have calculated address.
 			//here, you will update the shadow array of memory to be the cycle+1;
 			//need to calculate an address, is all instructions move into this stage.
@@ -469,7 +477,7 @@ void memory_access(){
 
 		printf("exiting WB.\n");
 		//display_struct(&pipeline[mem_inst_index]);
-		//te.
+		
 	}
 
 

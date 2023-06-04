@@ -14,6 +14,7 @@
 #define FALSE 0
 
 
+void initialize_wrong_path();
 void initialize_array(struct instruction *an_instruction[]);
 int process_program(char myString[], FILE *fptr, int linect, int progstop,int num[], struct instruction *an_instruction[]);
 void print_inst(struct instruction);

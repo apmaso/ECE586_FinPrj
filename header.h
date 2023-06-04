@@ -61,7 +61,7 @@ void display_struct(struct instruction *an_instruction);
 
 void fetch_instruction(int *pc);
 void decode_instruction();
-void execute_instruction();
+void execute_instruction(int *pc);
 void memory_access();
 void write_back();
 

@@ -22,9 +22,11 @@ int gpReg[32];
 int reg_ready[32];
 //debug flag:
 int debug = -1;
+
 //branch prediction:
 int wrong_path_inst[2];
 int branch_encountered=0;
+int flush =0;
 
 int pipeline_head;  //head->always points to the function that's in the status of fetch; NEEDS to be initialized to zero.
 int pipeline_tail;  //tail->always points to the function that's in the status of write_back;  NEEDS to be initialized to zero.
@@ -102,7 +104,7 @@ int main(int argc, char* argv[]) {
 		//mem-access, if load or store, there is a memory operation. otherwise just move it forward, probably. 
 		memory_access();
 		//execute's the program.
-		execute_instruction();
+		execute_instruction(&pc);
 
 		//decode an instruction from the program array, unless there is a stall.
 		decode_instruction();
@@ -138,7 +140,6 @@ int main(int argc, char* argv[]) {
 void initialize_wrong_path(){
 	for(int i=0;i<2;++i){
 		wrong_path_inst[i]=-1;
-		printf("wrong_path[%d] is %d\n", i, wrong_path_inst[i]);
 	}
 }
 void initialize_array(struct instruction *an_instruction[]){
@@ -373,16 +374,23 @@ int  pipe_empty() {
 
 }
 void fetch_instruction(int *pc){
-	
+
+	if(flush==1){
+		pipeline[wrong_path_inst[1]].pipe_stage=-1;
+	}
+	else{
+		(*pc)++;
+	}
+
 	int fetched_inst_stage = stagebusy(0);
 	if (fetched_inst_stage == -1 || *pc == 1) {
-
+		printf("entered the fetched if.");
 		int empty_pipe_slot=pipe_empty();
 			
 		copy_to_pipe(&program[*pc], &pipeline[empty_pipe_slot]);
 		pipeline[empty_pipe_slot].pipe_stage=0; 
 		//branch needs different handling.
-		(*pc)++;
+		//(*pc)++;
 		
 		if(branch_encountered==1){
 			wrong_path_inst[0]=empty_pipe_slot;	
@@ -392,19 +400,19 @@ void fetch_instruction(int *pc){
 			wrong_path_inst[1]=empty_pipe_slot;
 			branch_encountered++;
 		}	
-		if(branch_encountered==3){
+/*		if(branch_encountered==3){
 			branch_encountered=0;
 		}
-
+*/
 		if((pipeline[empty_pipe_slot].opcode==14 || pipeline[empty_pipe_slot].opcode==15 || pipeline[empty_pipe_slot].opcode==16) && branch_encountered==0){
 			branch_encountered=1;
 		}	
-				
 		printf("\nFetching inst.");
 		display_struct(&pipeline[empty_pipe_slot]);
 	}
-	printf("********************wrong_path 0: %d\n", pipeline[wrong_path_inst[0]].opcode);
-	printf("********************wrong_path 1: %d\n", pipeline[wrong_path_inst[1]].opcode);
+
+	printf("********************wrong_path 0: %d\n", wrong_path_inst[0]);
+	printf("********************wrong_path 1: %d\n", wrong_path_inst[1]);
 	printf("^^^^^^^^^^^^^^^^^^^^branch encountered: %d\n", branch_encountered);
 
 	printf("exiting fetch.\n");
@@ -448,13 +456,13 @@ void decode_instruction() {
 	printf("exiting decode.\n");
 }
 
-void execute_instruction(){
+void execute_instruction(int *pc){
 		
 		//execute the actual code...
 		int decoded_inst_index=stagebusy(1);
 		if(stagebusy(2)==-1 && decoded_inst_index != -1){
-
-				if(pipeline[decoded_inst_index].TYPE==0) {
+				printf("branch encountered is: %d\n", branch_encountered);
+				if(pipeline[decoded_inst_index].TYPE==0 && branch_encountered<3) {
 
 					if(cycle>reg_ready[pipeline[decoded_inst_index].rs] && cycle>reg_ready[pipeline[decoded_inst_index].rt]){
 
@@ -468,7 +476,7 @@ void execute_instruction(){
 					else printf("STALL:execute inst. \n");
 				}
 
-				if(pipeline[decoded_inst_index].TYPE==1) {
+				if(pipeline[decoded_inst_index].TYPE==1 && branch_encountered<3) {
 
 					if(cycle>reg_ready[pipeline[decoded_inst_index].rs]) {
 						if(pipeline[decoded_inst_index].opcode != 12 && pipeline[decoded_inst_index].opcode !=13){
@@ -478,6 +486,20 @@ void execute_instruction(){
 						
 						printf("execute inst.");
 						display_struct(&pipeline[decoded_inst_index]);
+
+					} else if(pipeline[decoded_inst_index].opcode==16) {
+						
+						pipeline[decoded_inst_index].pipe_stage=2;//update execution stage of instruction in pipe.
+					
+						branch_encountered=0;
+						//(*pc)=pipeline[decoded_inst_index].rs; FIXME: this needs to be uncommented.
+						(*pc)=7;//FIXME: address needs to be multiplied by four and handled in fetch to divide by four.
+						flush=1;
+						pipeline[wrong_path_inst[0]].pipe_stage=-1;
+						pipeline[wrong_path_inst[1]].pipe_stage=-1;
+	
+                                                printf("execute inst.");
+                                                display_struct(&pipeline[decoded_inst_index]);
 
 					}
 					else printf("STALL:execute inst. \n");
@@ -570,6 +592,10 @@ int stagebusy(int execution_stage){//this function is very confusing.
 			if(pipeline[i].pipe_stage==-1)//if pipeline is initialized to all -1s, the else if never runs.
 				continue;
 			else if(pipeline[i].pipe_stage==execution_stage){
+				if(execution_stage==0&& cycle>3){
+					printf("i is %d\n", i);
+					display_struct(&pipeline[i]);
+				}
 				return i;
 			}
 		}	

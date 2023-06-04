@@ -229,15 +229,15 @@ int process_code(struct instruction *an_instruction, int gpReg[])
 	int result=0;
 
 	if(an_instruction->opcode==0){
-		printf("rs is: %d\n rt is: %d\n", an_instruction->rs, an_instruction->rt);
+		//printf("rs is: %d\n rt is: %d\n", an_instruction->rs, an_instruction->rt);
 		result = ADD(gpReg[an_instruction->rs], gpReg[an_instruction->rt]);
-		printf("result is: %d\n", result);
+		//printf("result is: %d\n", result);
 		gpReg[an_instruction->rd]=result;
 	}
 	if(an_instruction->opcode==1){
-		printf("rs is: %d\n imm is: %d\n", an_instruction->rs, an_instruction->imm);
+		//printf("rs is: %d\n imm is: %d\n", an_instruction->rs, an_instruction->imm);
 		result=ADDI(gpReg[an_instruction->rs], an_instruction->imm);
-		printf("result is: %d\n", result);
+		//printf("result is: %d\n", result);
 
 		gpReg[an_instruction->rt]=result;
 		return 0;
@@ -251,6 +251,39 @@ int process_code(struct instruction *an_instruction, int gpReg[])
 		result=SUBI(gpReg[an_instruction->rs], an_instruction->imm);
 		gpReg[an_instruction->rd]=result;
 	}
+	if(an_instruction->opcode==4){
+		result=MUL(gpReg[an_instruction->rs], gpReg[an_instruction->rt]);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==5){
+		result=MULI(gpReg[an_instruction->rs], an_instruction->imm);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==6){
+		result=OR(gpReg[an_instruction->rs], gpReg[an_instruction->rt]);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==7){
+		result=ORI(gpReg[an_instruction->rs], an_instruction->imm);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==8){
+		result=AND(gpReg[an_instruction->rs], gpReg[an_instruction->rt]);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==9){
+		result=ANDI(gpReg[an_instruction->rs], an_instruction->imm);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==10){
+		result=XOR(gpReg[an_instruction->rs], gpReg[an_instruction->rt]);
+		gpReg[an_instruction->rd]=result;
+	}
+	if(an_instruction->opcode==11){
+		result=XORI(gpReg[an_instruction->rs], an_instruction->imm);
+		gpReg[an_instruction->rd]=result;
+	}
+
 
 
 	//gpReg[an_instruction->rd]=result;

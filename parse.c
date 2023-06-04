@@ -365,7 +365,7 @@ void initialize_reg(int gpReg[32]){
 
 void print_reg(int gpReg[]){
 	for(int i=0;i<SIZ;i++){
-		printf("GPREG[%d] is: %d\n", i, gpReg[i]);
+		printf("register[%d] is: %d\n", i, gpReg[i]);
 	}
 }
 

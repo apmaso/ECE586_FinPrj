@@ -41,6 +41,17 @@ void initialize_reg(int gpReg[32]);
 int process_code(struct instruction *an_instruction, int gpReg[]);
 int ADD(int rs, int rt);
 int ADDI(int rs, int imm);
+int SUB(int rs, int rt);
+int SUBI(int rs, int imm);
+int MUL(int rs, int rt);
+int MULI(int rs, int imm);
+int OR(int rs, int rt);
+int ORI(int rs, int imm);
+int AND(int rs, int rt);
+int ANDI(int rs, int imm);
+int XOR(int rs, int rt);
+int XORI(int rs, int imm);
+
 void print_reg(int gpReg[]);
 
 

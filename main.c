@@ -76,7 +76,7 @@ int main() {
     }
     
 
-    fptr = fopen("imageFiles/imageAddTB.txt", "r");
+    fptr = fopen("image.txt", "r");
 
 	while(fgets(myString, 10, fptr)){
 		//printf("%s", myString);
